@@ -69,7 +69,7 @@ end
 
 group :test do
   gem "shoulda-matchers", "~> 6.0"
-  gem "pundit-matchers", "~> 3.1"
+  gem "pundit-matchers", "~> 4.0"
   gem "webmock", "~> 3.0"
   gem "simplecov", require: false
   gem "database_cleaner-active_record"
