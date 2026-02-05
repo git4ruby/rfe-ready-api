@@ -30,7 +30,7 @@ gem "pagy", "~> 6.0"
 gem "aasm", "~> 5.5"
 
 # Audit Trail
-gem "paper_trail", "~> 15.0"
+gem "paper_trail", "~> 17.0"
 
 # Friendly URLs
 gem "friendly_id", "~> 5.5"
