@@ -32,6 +32,9 @@ Rails.application.routes.draw do
           post :start_analysis
           patch :assign_attorney
           patch :mark_reviewed
+          patch :mark_responded
+          post :archive
+          post :reopen
           post :export
         end
 

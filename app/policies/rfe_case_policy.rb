@@ -23,8 +23,20 @@ class RfeCasePolicy < ApplicationPolicy
     attorney?
   end
 
+  def mark_responded?
+    attorney?
+  end
+
   def export?
     attorney?
+  end
+
+  def archive?
+    can_edit?
+  end
+
+  def reopen?
+    admin?
   end
 
   def destroy?

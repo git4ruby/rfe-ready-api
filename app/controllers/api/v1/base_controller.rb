@@ -10,6 +10,7 @@ class Api::V1::BaseController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :forbidden
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
   rescue_from ActiveRecord::RecordInvalid, with: :unprocessable
+  rescue_from AASM::InvalidTransition, with: :invalid_transition
 
   private
 
@@ -25,6 +26,10 @@ class Api::V1::BaseController < ApplicationController
 
   def not_found
     render json: { error: "Resource not found." }, status: :not_found
+  end
+
+  def invalid_transition(exception)
+    render json: { error: exception.message }, status: :unprocessable_entity
   end
 
   def unprocessable(exception)

@@ -1,7 +1,7 @@
 class Api::V1::CasesController < Api::V1::BaseController
   include Pagy::Backend
 
-  before_action :set_case, only: %i[show update destroy start_analysis assign_attorney mark_reviewed export]
+  before_action :set_case, only: %i[show update destroy start_analysis assign_attorney mark_reviewed mark_responded archive reopen export]
 
   # GET /api/v1/cases
   def index
@@ -66,6 +66,30 @@ class Api::V1::CasesController < Api::V1::BaseController
     authorize @case, :mark_reviewed?
 
     @case.complete_analysis!
+    render json: { data: CaseSerializer.render_as_hash(@case) }
+  end
+
+  # PATCH /api/v1/cases/:id/mark_responded
+  def mark_responded
+    authorize @case, :mark_responded?
+
+    @case.mark_responded!
+    render json: { data: CaseSerializer.render_as_hash(@case) }
+  end
+
+  # POST /api/v1/cases/:id/archive
+  def archive
+    authorize @case, :archive?
+
+    @case.archive!
+    render json: { data: CaseSerializer.render_as_hash(@case) }
+  end
+
+  # POST /api/v1/cases/:id/reopen
+  def reopen
+    authorize @case, :reopen?
+
+    @case.reopen!
     render json: { data: CaseSerializer.render_as_hash(@case) }
   end
 
