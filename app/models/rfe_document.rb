@@ -5,6 +5,8 @@ class RfeDocument < ApplicationRecord
   belongs_to :case, class_name: "RfeCase"
   belongs_to :uploaded_by, class_name: "User"
 
+  has_one_attached :file
+
   has_many :rfe_sections, dependent: :nullify
   has_many :exhibits, dependent: :nullify
 

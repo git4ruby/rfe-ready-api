@@ -38,7 +38,7 @@ Rails.application.routes.draw do
           post :export
         end
 
-        resources :rfe_documents, only: [:index, :show, :create]
+        resources :rfe_documents, only: [:index, :show, :create, :destroy]
 
         resources :rfe_sections, only: [:index, :show, :update] do
           member do
