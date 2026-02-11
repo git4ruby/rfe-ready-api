@@ -45,8 +45,12 @@ gem "neighbor", "~> 0.4"
 # Rate Limiting
 gem "rack-attack", "~> 6.7"
 
-# File Processing (for later phases)
+# File Processing
 gem "aws-sdk-s3", "~> 1.0"
+gem "pdf-reader", "~> 2.12"
+
+# AI / LLM
+gem "ruby-openai", "~> 7.0"
 
 # Monitoring
 gem "lograge", "~> 0.14"

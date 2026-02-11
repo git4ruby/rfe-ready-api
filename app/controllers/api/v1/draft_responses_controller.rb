@@ -15,6 +15,19 @@ class Api::V1::DraftResponsesController < Api::V1::BaseController
     render json: { data: DraftResponseSerializer.render_as_hash(@draft_response, view: :detail) }
   end
 
+  # POST /api/v1/cases/:case_id/draft_responses/generate_all
+  def generate_all
+    authorize @case, :update?
+
+    unless @case.rfe_sections.any?
+      render json: { error: "No RFE sections found. Run analysis first." }, status: :unprocessable_entity
+      return
+    end
+
+    GenerateDraftsJob.perform_later(@case.id, ActsAsTenant.current_tenant.id)
+    render json: { data: { status: "queued", message: "Draft generation started." } }, status: :accepted
+  end
+
   # PATCH/PUT /api/v1/cases/:case_id/draft_responses/:id
   def update
     authorize @draft_response
@@ -35,13 +48,13 @@ class Api::V1::DraftResponsesController < Api::V1::BaseController
   def regenerate
     authorize @draft_response, :regenerate?
 
-    # Queue a job to regenerate the AI content for this draft
+    GenerateDraftsJob.perform_later(
+      @case.id,
+      ActsAsTenant.current_tenant.id,
+      section_id: @draft_response.rfe_section_id
+    )
     render json: {
-      data: {
-        draft_response_id: @draft_response.id,
-        status: "queued",
-        message: "Regeneration has been queued."
-      }
+      data: { status: "queued", message: "Regeneration started." }
     }, status: :accepted
   end
 

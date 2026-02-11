@@ -50,6 +50,9 @@ Rails.application.configure do
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
 
+  # Use async adapter in dev (no Redis/Sidekiq needed)
+  config.active_job.queue_adapter = :async
+
   # Store files locally in development
   config.active_storage.service = :local
 

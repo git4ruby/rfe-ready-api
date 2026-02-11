@@ -41,6 +41,21 @@ class Api::V1::ExhibitsController < Api::V1::BaseController
     head :no_content
   end
 
+  # PATCH /api/v1/cases/:case_id/exhibits/reorder
+  def reorder
+    authorize @case, :update?
+
+    ids = params[:ids] || []
+    ActiveRecord::Base.transaction do
+      ids.each_with_index do |id, index|
+        @case.exhibits.where(id: id).update_all(position: index)
+      end
+    end
+
+    exhibits = @case.exhibits.ordered
+    render json: { data: ExhibitSerializer.render_as_hash(exhibits) }
+  end
+
   private
 
   def set_case

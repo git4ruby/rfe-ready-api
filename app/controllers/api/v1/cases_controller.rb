@@ -1,7 +1,7 @@
 class Api::V1::CasesController < Api::V1::BaseController
   include Pagy::Backend
 
-  before_action :set_case, only: %i[show update destroy start_analysis assign_attorney mark_reviewed mark_responded archive reopen export]
+  before_action :set_case, only: %i[show update destroy start_analysis analysis_status assign_attorney mark_reviewed mark_responded archive reopen export]
 
   # GET /api/v1/cases
   def index
@@ -48,8 +48,32 @@ class Api::V1::CasesController < Api::V1::BaseController
   def start_analysis
     authorize @case, :start_analysis?
 
+    # Validate RFE notice documents exist
+    unless @case.rfe_documents.rfe_notices.any?
+      render json: { error: "Please upload at least one RFE notice document before starting analysis." }, status: :unprocessable_entity
+      return
+    end
+
     @case.start_analysis!
+    @case.update_column(:metadata, @case.metadata.merge(analysis_progress: "queued", analysis_updated_at: Time.current))
+
+    AnalyzeRfeDocumentJob.perform_later(@case.id, ActsAsTenant.current_tenant.id)
     render json: { data: CaseSerializer.render_as_hash(@case) }
+  end
+
+  # GET /api/v1/cases/:id/analysis_status
+  def analysis_status
+    authorize @case, :show?
+
+    progress = @case.metadata["analysis_progress"] || "unknown"
+    render json: {
+      data: {
+        status: @case.status,
+        progress: progress,
+        sections_count: @case.rfe_sections.count,
+        error: @case.metadata["analysis_error"]
+      }
+    }
   end
 
   # PATCH /api/v1/cases/:id/assign_attorney

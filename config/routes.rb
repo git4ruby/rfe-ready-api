@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       resources :cases do
         member do
           post :start_analysis
+          get :analysis_status
           patch :assign_attorney
           patch :mark_reviewed
           patch :mark_responded
@@ -53,13 +54,20 @@ Rails.application.routes.draw do
         end
 
         resources :draft_responses, only: [:index, :show, :update] do
+          collection do
+            post :generate_all
+          end
           member do
             patch :approve
             post :regenerate
           end
         end
 
-        resources :exhibits
+        resources :exhibits do
+          collection do
+            patch :reorder
+          end
+        end
       end
 
       # Knowledge base

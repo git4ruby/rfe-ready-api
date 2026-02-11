@@ -7,4 +7,9 @@ class RfeSectionSerializer < Blueprinter::Base
     field :original_text
     field :ai_analysis
   end
+
+  view :detail do
+    include_view :extended
+    association :evidence_checklists, blueprint: EvidenceChecklistSerializer
+  end
 end
