@@ -11,7 +11,7 @@ gem "bootsnap", require: false
 
 # Background Jobs
 gem "sidekiq", "~> 7.2"
-gem "sidekiq-scheduler", "~> 5.0"
+gem "sidekiq-scheduler", "~> 6.0"
 
 # Authentication & Authorization
 gem "devise", "~> 4.9"
