@@ -37,6 +37,7 @@ Rails.application.routes.draw do
           post :archive
           post :reopen
           post :export
+          get :export
         end
 
         resources :rfe_documents, only: [:index, :show, :create, :destroy]

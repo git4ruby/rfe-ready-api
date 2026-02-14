@@ -49,6 +49,12 @@ gem "rack-attack", "~> 6.7"
 gem "aws-sdk-s3", "~> 1.0"
 gem "pdf-reader", "~> 2.12"
 
+# Document Export
+gem "matrix" # required by prawn on Ruby 3.1+
+gem "prawn", "~> 2.4"
+gem "prawn-table", "~> 0.2"
+gem "caracal", "~> 1.4"
+
 # AI / LLM
 gem "ruby-openai", "~> 7.0"
 

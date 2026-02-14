@@ -121,14 +121,21 @@ class Api::V1::CasesController < Api::V1::BaseController
   def export
     authorize @case, :export?
 
-    # Delegate to an export service; return a download URL or job ID
-    render json: {
-      data: {
-        case_id: @case.id,
-        status: "queued",
-        message: "Export is being prepared."
-      }
-    }, status: :accepted
+    format = params[:format_type]&.to_sym || :pdf
+    unless %i[pdf docx zip].include?(format)
+      render json: { error: "Unsupported format. Use 'pdf' or 'docx'." }, status: :unprocessable_entity
+      return
+    end
+
+    service = ExportService.new(@case, format: format)
+    data = service.call
+
+    @case.update_column(:exported_at, Time.current)
+
+    send_data data,
+      filename: service.filename,
+      type: service.content_type,
+      disposition: "attachment"
   end
 
   private
