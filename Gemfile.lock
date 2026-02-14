@@ -424,8 +424,8 @@ GEM
     rufus-scheduler (3.9.2)
       fugit (~> 1.1, >= 1.11.1)
     securerandom (0.4.1)
-    shoulda-matchers (6.5.0)
-      activesupport (>= 5.2.0)
+    shoulda-matchers (7.0.1)
+      activesupport (>= 7.1)
     sidekiq (7.3.9)
       base64
       connection_pool (>= 2.3.0)
@@ -521,7 +521,7 @@ DEPENDENCIES
   rspec-rails (~> 6.1)
   rubocop-rails-omakase
   ruby-openai (~> 7.0)
-  shoulda-matchers (~> 6.0)
+  shoulda-matchers (~> 7.0)
   sidekiq (~> 7.2)
   sidekiq-scheduler (~> 5.0)
   simplecov
