@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       resource :tenant, only: [:show, :update]
 
       # User management (admin)
-      resources :users, only: [:index, :show, :update] do
+      resources :users, only: [:index, :show, :create, :update] do
         member do
           post :resend_invitation
         end

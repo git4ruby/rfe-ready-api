@@ -6,11 +6,12 @@ class Api::V1::KnowledgeDocsController < Api::V1::BaseController
   # GET /api/v1/knowledge_docs
   def index
     scope = policy_scope(KnowledgeDoc).order(created_at: :desc)
+    scope = scope.where(doc_type: params[:doc_type]) if params[:doc_type].present?
     scope = scope.for_visa(params[:visa_type]) if params[:visa_type].present?
     scope = scope.for_category(params[:rfe_category]) if params[:rfe_category].present?
     scope = scope.active if params[:active_only].present?
 
-    @pagy, docs = pagy(scope)
+    @pagy, docs = pagy(scope, items: 10)
     render json: {
       data: KnowledgeDocSerializer.render_as_hash(docs),
       meta: pagy_metadata(@pagy)
@@ -62,7 +63,8 @@ class Api::V1::KnowledgeDocsController < Api::V1::BaseController
       :content,
       :visa_type,
       :rfe_category,
-      :is_active
+      :is_active,
+      :file
     )
   end
 end

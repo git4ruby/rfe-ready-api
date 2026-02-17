@@ -4,6 +4,8 @@ class KnowledgeDoc < ApplicationRecord
   belongs_to :tenant
   belongs_to :uploaded_by, class_name: "User"
 
+  has_one_attached :file
+
   enum :doc_type, { template: 0, sample_response: 1, regulation: 2, firm_knowledge: 3 }
 
   validates :title, presence: true
