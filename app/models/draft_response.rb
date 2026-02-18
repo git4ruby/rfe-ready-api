@@ -1,4 +1,6 @@
 class DraftResponse < ApplicationRecord
+  include Auditable
+
   acts_as_tenant :tenant
 
   belongs_to :tenant

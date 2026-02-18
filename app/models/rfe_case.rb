@@ -1,5 +1,6 @@
 class RfeCase < ApplicationRecord
   include AASM
+  include Auditable
 
   self.table_name = "cases"
 

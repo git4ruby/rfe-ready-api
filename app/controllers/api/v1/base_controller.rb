@@ -3,6 +3,7 @@ class Api::V1::BaseController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_tenant
+  before_action :set_current_attributes
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -18,6 +19,12 @@ class Api::V1::BaseController < ApplicationController
     return unless current_user
 
     ActsAsTenant.current_tenant = current_user.tenant
+  end
+
+  def set_current_attributes
+    Current.user = current_user
+    Current.ip_address = request.remote_ip
+    Current.user_agent = request.user_agent
   end
 
   def forbidden(exception)

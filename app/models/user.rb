@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
+  include Auditable
 
   devise :database_authenticatable, :recoverable, :rememberable,
          :validatable, :trackable, :confirmable, :lockable,
