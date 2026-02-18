@@ -51,7 +51,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   private
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.where(tenant: current_user.tenant).find(params[:id])
   end
 
   def user_params

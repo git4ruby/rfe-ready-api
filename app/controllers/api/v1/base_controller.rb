@@ -18,6 +18,11 @@ class Api::V1::BaseController < ApplicationController
   def set_tenant
     return unless current_user
 
+    if current_user.super_admin?
+      render json: { error: "Super admins must use the platform admin endpoints." }, status: :forbidden
+      return
+    end
+
     ActsAsTenant.current_tenant = current_user.tenant
   end
 

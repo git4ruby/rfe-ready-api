@@ -31,7 +31,11 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def super_admin?
+    is_super_admin
+  end
+
   def jwt_payload
-    { "jti" => jti, "tenant_id" => tenant_id, "role" => role }
+    { "jti" => jti, "tenant_id" => tenant_id, "role" => role, "is_super_admin" => is_super_admin }
   end
 end

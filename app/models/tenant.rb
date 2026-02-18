@@ -1,4 +1,6 @@
 class Tenant < ApplicationRecord
+  PLATFORM_SLUG = "platform-admin".freeze
+
   has_many :users, dependent: :destroy
   has_many :rfe_cases, dependent: :destroy
   has_many :knowledge_docs, dependent: :destroy
@@ -15,6 +17,15 @@ class Tenant < ApplicationRecord
   before_validation :generate_slug, on: :create
 
   scope :active, -> { where(status: :active) }
+  scope :real_tenants, -> { where.not(slug: PLATFORM_SLUG) }
+
+  def self.platform_tenant
+    find_by!(slug: PLATFORM_SLUG)
+  end
+
+  def platform_tenant?
+    slug == PLATFORM_SLUG
+  end
 
   private
 

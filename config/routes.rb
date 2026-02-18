@@ -80,6 +80,19 @@ Rails.application.routes.draw do
 
       # Audit logs (admin only)
       resources :audit_logs, only: [:index]
+
+      # Super Admin panel
+      namespace :admin do
+        get "dashboard", to: "dashboard#index"
+
+        resources :tenants do
+          member do
+            patch :change_status
+            patch :change_plan
+          end
+          resources :users, only: [:index, :create]
+        end
+      end
     end
   end
 end

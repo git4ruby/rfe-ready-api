@@ -14,7 +14,8 @@ class Api::V1::SessionsController < Devise::SessionsController
             first_name: resource.first_name,
             last_name: resource.last_name,
             role: resource.role,
-            tenant_id: resource.tenant_id
+            tenant_id: resource.tenant_id,
+            is_super_admin: resource.is_super_admin
           }
         },
         meta: { message: "Logged in successfully." }
