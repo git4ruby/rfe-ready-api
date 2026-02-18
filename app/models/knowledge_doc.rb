@@ -17,4 +17,5 @@ class KnowledgeDoc < ApplicationRecord
   scope :active, -> { where(is_active: true) }
   scope :for_visa, ->(visa) { where(visa_type: visa) }
   scope :for_category, ->(cat) { where(rfe_category: cat) }
+  scope :search, ->(q) { where("title ILIKE :q OR content ILIKE :q", q: "%#{sanitize_sql_like(q)}%") }
 end

@@ -72,7 +72,11 @@ Rails.application.routes.draw do
       end
 
       # Knowledge base
-      resources :knowledge_docs
+      resources :knowledge_docs do
+        collection do
+          post :bulk_create
+        end
+      end
 
       # Audit logs (admin only)
       resources :audit_logs, only: [:index]
