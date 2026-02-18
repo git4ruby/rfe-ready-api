@@ -16,6 +16,10 @@ class KnowledgeDocSerializer < Blueprinter::Base
     end
   end
 
+  field :embedding_status do |doc|
+    doc.embeddings.exists? ? "embedded" : "pending"
+  end
+
   view :extended do
     field :content
     field :metadata

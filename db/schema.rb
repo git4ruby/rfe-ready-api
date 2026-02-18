@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_17_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+  enable_extension "vector"
 
-  create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "active_storage_attachments", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.uuid "record_id", null: false
@@ -25,7 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "active_storage_blobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -37,13 +38,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "active_storage_variant_records", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "audit_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "audit_logs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "user_id"
     t.string "action", null: false
@@ -61,7 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
   end
 
-  create_table "cases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "cases", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "created_by_id", null: false
     t.uuid "assigned_attorney_id"
@@ -92,7 +93,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["uscis_receipt_number"], name: "index_cases_on_uscis_receipt_number"
   end
 
-  create_table "draft_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "draft_responses", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "case_id", null: false
     t.uuid "rfe_section_id", null: false
@@ -114,7 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["tenant_id"], name: "index_draft_responses_on_tenant_id"
   end
 
-  create_table "embeddings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "embeddings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.string "embeddable_type", null: false
     t.uuid "embeddable_id", null: false
@@ -123,11 +124,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.jsonb "metadata", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.vector "embedding", limit: 1536
     t.index ["embeddable_type", "embeddable_id"], name: "index_embeddings_on_embeddable_type_and_embeddable_id"
     t.index ["tenant_id"], name: "index_embeddings_on_tenant_id"
   end
 
-  create_table "evidence_checklists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "evidence_checklists", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "case_id", null: false
     t.uuid "rfe_section_id", null: false
@@ -149,7 +151,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["tenant_id"], name: "index_evidence_checklists_on_tenant_id"
   end
 
-  create_table "exhibits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "exhibits", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "case_id", null: false
     t.uuid "rfe_document_id"
@@ -167,7 +169,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["tenant_id"], name: "index_exhibits_on_tenant_id"
   end
 
-  create_table "knowledge_docs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "knowledge_docs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "uploaded_by_id", null: false
     t.integer "doc_type", default: 0, null: false
@@ -185,7 +187,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["visa_type", "rfe_category"], name: "index_knowledge_docs_on_visa_type_and_rfe_category"
   end
 
-  create_table "rfe_documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "rfe_documents", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "case_id", null: false
     t.uuid "uploaded_by_id", null: false
@@ -207,7 +209,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["uploaded_by_id"], name: "index_rfe_documents_on_uploaded_by_id"
   end
 
-  create_table "rfe_sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "rfe_sections", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "case_id", null: false
     t.uuid "rfe_document_id"
@@ -228,7 +230,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["tenant_id"], name: "index_rfe_sections_on_tenant_id"
   end
 
-  create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "tenants", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
     t.integer "plan", default: 0, null: false
@@ -241,7 +243,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_10_183058) do
     t.index ["slug"], name: "index_tenants_on_slug", unique: true
   end
 
-  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

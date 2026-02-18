@@ -31,6 +31,7 @@ class Api::V1::KnowledgeDocsController < Api::V1::BaseController
     authorize @knowledge_doc
 
     @knowledge_doc.save!
+    GenerateEmbeddingsJob.perform_later(@knowledge_doc.id, current_user.tenant_id)
     render json: { data: KnowledgeDocSerializer.render_as_hash(@knowledge_doc) }, status: :created
   end
 
@@ -39,6 +40,7 @@ class Api::V1::KnowledgeDocsController < Api::V1::BaseController
     authorize @knowledge_doc
 
     @knowledge_doc.update!(knowledge_doc_params)
+    GenerateEmbeddingsJob.perform_later(@knowledge_doc.id, current_user.tenant_id)
     render json: { data: KnowledgeDocSerializer.render_as_hash(@knowledge_doc) }
   end
 

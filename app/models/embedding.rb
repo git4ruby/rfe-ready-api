@@ -1,5 +1,6 @@
 class Embedding < ApplicationRecord
   acts_as_tenant :tenant
+  has_neighbors :embedding
 
   belongs_to :tenant
   belongs_to :embeddable, polymorphic: true

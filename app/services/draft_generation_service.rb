@@ -55,12 +55,15 @@ class DraftGenerationService
   def call_openai(section)
     client = OpenAI::Client.new
 
+    # Retrieve relevant knowledge base context via RAG
+    rag_context = retrieve_rag_context(section)
+
     response = client.chat(
       parameters: {
         model: "gpt-4o",
         messages: [
           { role: "system", content: system_prompt },
-          { role: "user", content: user_prompt(section) }
+          { role: "user", content: user_prompt(section, rag_context) }
         ],
         temperature: 0.3,
         max_tokens: 3000
@@ -86,13 +89,32 @@ class DraftGenerationService
       - Include placeholders in [BRACKETS] for case-specific details the attorney must fill in
       - Structure the response as a persuasive legal argument
       - Include a brief introduction, evidence summary, legal argument, and conclusion
+      - When relevant knowledge base context is provided, incorporate those references, templates, and legal arguments into your response
     PROMPT
   end
 
-  def user_prompt(section)
+  def user_prompt(section, rag_context = [])
     checklist_items = section.evidence_checklists.ordered.map do |item|
       "- #{item.document_name} (#{item.priority}): #{item.description}"
     end.join("\n")
+
+    knowledge_context = if rag_context.present?
+      formatted = rag_context.map.with_index do |ctx, i|
+        source = ctx[:metadata]&.dig("title") || "Knowledge Doc"
+        doc_type = ctx[:metadata]&.dig("doc_type") || "unknown"
+        "--- Source #{i + 1}: #{source} (#{doc_type}) ---\n#{ctx[:content]}"
+      end.join("\n\n")
+
+      <<~CONTEXT
+
+        RELEVANT KNOWLEDGE BASE CONTEXT:
+        Use the following references from our knowledge base to strengthen the response with specific legal arguments, regulations, and templates:
+
+        #{formatted}
+      CONTEXT
+    else
+      ""
+    end
 
     <<~PROMPT
       Draft a response for the following RFE issue:
@@ -113,8 +135,23 @@ class DraftGenerationService
       CASE CONTEXT:
       - Visa Type: #{rfe_case.visa_type}
       - Petitioner: #{rfe_case.petitioner_name}
-
+      #{knowledge_context}
       Write a comprehensive draft response addressing this specific issue. Use [BRACKETS] for any case-specific details that need to be filled in by the attorney.
     PROMPT
+  end
+
+  def retrieve_rag_context(section)
+    query = "#{section.title} #{section.original_text} #{section.summary}".strip
+    return [] if query.blank?
+
+    RagRetrievalService.new(
+      query: query,
+      tenant: rfe_case.tenant,
+      visa_type: rfe_case.visa_type,
+      limit: 5
+    ).call
+  rescue => e
+    Rails.logger.warn("DraftGenerationService: RAG retrieval failed for section #{section.id}: #{e.message}")
+    []
   end
 end
