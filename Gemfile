@@ -36,7 +36,7 @@ gem "aasm", "~> 5.5"
 gem "friendly_id", "~> 5.5"
 
 # Encryption
-gem "lockbox", "~> 1.3"
+gem "lockbox", "~> 2.1"
 gem "blind_index", "~> 2.4"
 
 # Vector Search (pgvector)
