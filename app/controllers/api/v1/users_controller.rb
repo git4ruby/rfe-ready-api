@@ -15,7 +15,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   # GET /api/v1/users/:id
   def show
     authorize @user
-    render json: { data: UserSerializer.render_as_hash(@user, view: :detail) }
+    render json: { data: UserSerializer.render_as_hash(@user, view: :extended) }
   end
 
   # POST /api/v1/users
@@ -23,9 +23,11 @@ class Api::V1::UsersController < Api::V1::BaseController
     @user = User.new(create_user_params)
     @user.tenant = current_user.tenant
     @user.jti = SecureRandom.uuid
+    @user.confirmed_at = Time.current
     authorize @user
 
     @user.save!
+    UserMailer.welcome_email(@user, params[:user][:password]).deliver_later
     render json: { data: UserSerializer.render_as_hash(@user) }, status: :created
   end
 

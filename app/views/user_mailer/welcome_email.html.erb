@@ -1,0 +1,17 @@
+<h2>Welcome to RFE Ready, <%= @user.first_name %>!</h2>
+
+<p>Your account has been created for <strong><%= @organization %></strong>. You can now sign in and start using the RFE Ready platform.</p>
+
+<div class="info-box">
+  <p style="margin-bottom: 8px;"><strong>Your login credentials:</strong></p>
+  <p style="margin-bottom: 4px;">Email: <strong><%= @user.email %></strong></p>
+  <p style="margin-bottom: 0;">Temporary Password: <strong><%= @temp_password %></strong></p>
+</div>
+
+<p>For security, please change your password after your first login.</p>
+
+<p style="text-align: center; margin: 24px 0;">
+  <a href="<%= @login_url %>" class="btn">Sign In to RFE Ready</a>
+</p>
+
+<p style="font-size: 13px; color: #9ca3af;">If you didn't expect this email, please contact your organization administrator.</p>

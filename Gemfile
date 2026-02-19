@@ -61,6 +61,9 @@ gem "ruby-openai", "~> 7.0"
 # Monitoring
 gem "lograge", "~> 0.14"
 
+# Email
+gem "letter_opener", group: :development
+
 # Environment
 gem "dotenv-rails", groups: [:development, :test]
 

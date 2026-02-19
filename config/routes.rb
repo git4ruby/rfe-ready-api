@@ -9,12 +9,26 @@ Rails.application.routes.draw do
       sessions: "api/v1/sessions",
       registrations: "api/v1/registrations"
     },
+    skip: [:passwords],
     defaults: { format: :json }
+
+  # Password reset (standalone, not Devise controller)
+  post "api/v1/users/password", to: "api/v1/passwords#create"
+  put  "api/v1/users/password", to: "api/v1/passwords#update"
+  patch "api/v1/users/password", to: "api/v1/passwords#update"
 
   namespace :api do
     namespace :v1 do
       # Dashboard
       get "dashboard", to: "dashboard#index"
+
+      # Health check (API-level)
+      get "health", to: "health#show"
+
+      # Profile (current user)
+      resource :profile, only: [:show, :update] do
+        patch :change_password, on: :member
+      end
 
       # Tenant settings (current tenant only)
       resource :tenant, only: [:show, :update]

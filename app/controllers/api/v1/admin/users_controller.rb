@@ -21,6 +21,7 @@ class Api::V1::Admin::UsersController < Api::V1::Admin::BaseController
     user.confirmed_at = Time.current
 
     user.save!
+    UserMailer.welcome_email(user, params[:user][:password]).deliver_later
     render json: {
       data: UserSerializer.render_as_hash(user),
       meta: { message: "User created successfully for #{tenant.name}." }

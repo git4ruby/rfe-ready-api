@@ -1,0 +1,16 @@
+Welcome to RFE Ready, <%= @user.first_name %>!
+
+Your account has been created for <%= @organization %>. You can now sign in and start using the RFE Ready platform.
+
+Your login credentials:
+  Email: <%= @user.email %>
+  Temporary Password: <%= @temp_password %>
+
+For security, please change your password after your first login.
+
+Sign in at: <%= @login_url %>
+
+If you didn't expect this email, please contact your organization administrator.
+
+--
+RFE Ready
