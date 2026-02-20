@@ -1,7 +1,7 @@
 class Api::V1::CasesController < Api::V1::BaseController
   include Pagy::Backend
 
-  before_action :set_case, only: %i[show update destroy start_analysis analysis_status assign_attorney mark_reviewed mark_responded archive reopen export]
+  before_action :set_case, only: %i[show update destroy start_analysis analysis_status assign_attorney mark_reviewed mark_responded archive reopen export activity]
 
   # GET /api/v1/cases
   def index
@@ -136,6 +136,40 @@ class Api::V1::CasesController < Api::V1::BaseController
       filename: service.filename,
       type: service.content_type,
       disposition: "attachment"
+  end
+
+  # POST /api/v1/cases/bulk_update_status
+  def bulk_update_status
+    ids = params[:ids]
+    action_name = params[:action_name]
+
+    unless %w[archive reopen].include?(action_name)
+      render json: { error: "Invalid action. Use 'archive' or 'reopen'." }, status: :unprocessable_entity
+      return
+    end
+
+    cases = policy_scope(RfeCase).where(id: ids)
+    success = 0
+    failed = 0
+
+    cases.find_each do |rfe_case|
+      begin
+        authorize rfe_case, :"#{action_name}?"
+        rfe_case.send(:"#{action_name}!")
+        success += 1
+      rescue StandardError
+        failed += 1
+      end
+    end
+
+    render json: { data: { success: success, failed: failed, total: ids.size } }
+  end
+
+  # GET /api/v1/cases/:id/activity
+  def activity
+    authorize @case, :show?
+    logs = AuditLog.for_record(@case).recent.includes(:user).limit(50)
+    render json: { data: AuditLogSerializer.render_as_hash(logs) }
   end
 
   private

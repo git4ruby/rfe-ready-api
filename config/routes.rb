@@ -35,6 +35,9 @@ Rails.application.routes.draw do
 
       # User management (admin)
       resources :users, only: [:index, :show, :create, :update] do
+        collection do
+          post :bulk_update_status
+        end
         member do
           post :resend_invitation
         end
@@ -42,6 +45,9 @@ Rails.application.routes.draw do
 
       # Cases with nested resources
       resources :cases do
+        collection do
+          post :bulk_update_status
+        end
         member do
           post :start_analysis
           get :analysis_status
@@ -52,6 +58,7 @@ Rails.application.routes.draw do
           post :reopen
           post :export
           get :export
+          get :activity
         end
 
         resources :rfe_documents, only: [:index, :show, :create, :destroy]

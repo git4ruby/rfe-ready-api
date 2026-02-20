@@ -39,6 +39,35 @@ class Api::V1::UsersController < Api::V1::BaseController
     render json: { data: UserSerializer.render_as_hash(@user) }
   end
 
+  # POST /api/v1/users/bulk_update_status
+  def bulk_update_status
+    ids = params[:ids]
+    new_status = params[:status]
+
+    unless %w[active inactive].include?(new_status)
+      render json: { error: "Invalid status. Use 'active' or 'inactive'." }, status: :unprocessable_entity
+      return
+    end
+
+    users = policy_scope(User).where(id: ids)
+    success = 0
+    failed = 0
+
+    users.find_each do |user|
+      next if user.id == current_user.id # cannot change own status
+
+      begin
+        authorize user, :update?
+        user.update!(status: new_status)
+        success += 1
+      rescue StandardError
+        failed += 1
+      end
+    end
+
+    render json: { data: { success: success, failed: failed, total: ids.size } }
+  end
+
   # POST /api/v1/users/:id/resend_invitation
   def resend_invitation
     authorize @user, :resend_invitation?
