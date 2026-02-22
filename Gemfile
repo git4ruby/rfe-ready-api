@@ -14,7 +14,7 @@ gem "sidekiq", "~> 7.2"
 gem "sidekiq-scheduler", "~> 5.0"
 
 # Authentication & Authorization
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 gem "devise-jwt", "~> 0.12"
 gem "pundit", "~> 2.3"
 
