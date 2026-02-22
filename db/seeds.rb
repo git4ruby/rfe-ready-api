@@ -155,6 +155,16 @@ seed_case(tenant: tenant3, attorney: attorney3, case_number: "LIG-2024-002", vis
           petitioner: "FinanceCore Inc.", beneficiary: "Yuki Tanaka", deadline_days: 20, received_days_ago: 30)
 
 # ============================================================
+# Feature Flags (for all tenants)
+# ============================================================
+puts "\n--- Feature Flags ---"
+[tenant1, tenant2, tenant3].each do |tenant|
+  ActsAsTenant.current_tenant = tenant
+  FeatureFlag.seed_defaults(tenant)
+  puts "  Seeded feature flags for #{tenant.name}"
+end
+
+# ============================================================
 puts "\n✅ Seeding complete!"
 puts "\nLogin credentials:"
 puts "  Super Admin:              superadmin@rfeready.com (Password: SuperAdmin123!)"

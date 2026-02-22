@@ -10,7 +10,12 @@ class Api::V1::ProfilesController < Api::V1::BaseController
 
   # PATCH /api/v1/profile
   def update
-    current_user.update!(profile_params)
+    attrs = profile_params.to_h
+    if attrs.key?("preferences")
+      merged = (current_user.preferences || {}).merge(attrs.delete("preferences"))
+      attrs["preferences"] = merged
+    end
+    current_user.update!(attrs)
     render json: { data: UserSerializer.render_as_hash(current_user, view: :extended) }
   end
 
@@ -33,6 +38,8 @@ class Api::V1::ProfilesController < Api::V1::BaseController
   private
 
   def profile_params
-    params.require(:profile).permit(:first_name, :last_name, :bar_number)
+    params.require(:profile).permit(:first_name, :last_name, :bar_number,
+      preferences: [:timezone, :dashboard_layout, :locale, :onboarding_completed,
+                     :notify_case_assigned, :notify_deadline_approaching, :notify_draft_ready])
   end
 end

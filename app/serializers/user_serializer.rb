@@ -4,6 +4,7 @@ class UserSerializer < Blueprinter::Base
 
   view :extended do
     field :preferences
+    field :otp_required_for_login
     field :sign_in_count
     field :current_sign_in_at
     association :tenant, blueprint: TenantSerializer

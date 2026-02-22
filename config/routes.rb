@@ -99,8 +99,38 @@ Rails.application.routes.draw do
         end
       end
 
+      # SSO / OAuth callbacks
+      get "auth/:provider/callback", to: "omniauth#callback"
+      post "auth/:provider/callback", to: "omniauth#callback"
+      get "auth/failure", to: "omniauth#failure"
+
+      # Two-Factor Authentication
+      resource :two_factor, controller: "two_factor", only: [] do
+        post :setup, on: :collection
+        post :verify, on: :collection
+        delete :disable, on: :collection, path: ""
+        post :validate, on: :collection
+      end
+
+      # Global search
+      get "search", to: "search#index"
+
+      # Feature flags
+      resources :feature_flags, only: [:index]
+
+      # Backups (admin only)
+      resources :backups, only: [:index, :create, :destroy] do
+        member do
+          get :download
+        end
+      end
+
       # Audit logs (admin only)
-      resources :audit_logs, only: [:index]
+      resources :audit_logs, only: [:index] do
+        collection do
+          get :export
+        end
+      end
 
       # Super Admin panel
       namespace :admin do

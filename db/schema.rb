@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_18_170134) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_19_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -60,6 +60,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_170134) do
     t.index ["tenant_id", "created_at"], name: "index_audit_logs_on_tenant_id_and_created_at"
     t.index ["tenant_id"], name: "index_audit_logs_on_tenant_id"
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
+  end
+
+  create_table "backups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_id", null: false
+    t.uuid "user_id"
+    t.integer "status", default: 0, null: false
+    t.string "file_url"
+    t.bigint "file_size"
+    t.text "error_message"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "created_at"], name: "index_backups_on_tenant_id_and_created_at"
+    t.index ["tenant_id"], name: "index_backups_on_tenant_id"
+    t.index ["user_id"], name: "index_backups_on_user_id"
   end
 
   create_table "cases", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -169,6 +184,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_170134) do
     t.index ["tenant_id"], name: "index_exhibits_on_tenant_id"
   end
 
+  create_table "feature_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_id", null: false
+    t.string "name", null: false
+    t.boolean "enabled", default: false, null: false
+    t.string "allowed_roles", default: [], array: true
+    t.string "allowed_plans", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "name"], name: "index_feature_flags_on_tenant_id_and_name", unique: true
+    t.index ["tenant_id"], name: "index_feature_flags_on_tenant_id"
+  end
+
   create_table "knowledge_docs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "uploaded_by_id", null: false
@@ -272,6 +299,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_170134) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_super_admin", default: false, null: false
+    t.string "otp_secret"
+    t.boolean "otp_required_for_login", default: false, null: false
+    t.text "otp_backup_codes", default: [], array: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
@@ -285,6 +315,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_170134) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audit_logs", "tenants"
   add_foreign_key "audit_logs", "users"
+  add_foreign_key "backups", "tenants"
+  add_foreign_key "backups", "users"
   add_foreign_key "cases", "tenants"
   add_foreign_key "cases", "users", column: "assigned_attorney_id"
   add_foreign_key "cases", "users", column: "created_by_id"
@@ -299,6 +331,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_170134) do
   add_foreign_key "exhibits", "cases"
   add_foreign_key "exhibits", "rfe_documents"
   add_foreign_key "exhibits", "tenants"
+  add_foreign_key "feature_flags", "tenants"
   add_foreign_key "knowledge_docs", "tenants"
   add_foreign_key "knowledge_docs", "users", column: "uploaded_by_id"
   add_foreign_key "rfe_documents", "cases"

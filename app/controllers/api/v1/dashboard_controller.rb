@@ -4,6 +4,14 @@ class Api::V1::DashboardController < Api::V1::BaseController
 
   # GET /api/v1/dashboard
   def index
+    period = params[:period] || "30d"
+    range = case period
+            when "7d" then 7.days.ago..Time.current
+            when "90d" then 90.days.ago..Time.current
+            when "all" then nil
+            else 30.days.ago..Time.current
+            end
+
     cases = RfeCase.where(tenant: current_user.tenant)
     knowledge_docs = KnowledgeDoc.where(tenant: current_user.tenant)
 
@@ -29,8 +37,16 @@ class Api::V1::DashboardController < Api::V1::BaseController
         },
         recent_activity: AuditLogSerializer.render_as_hash(
           AuditLog.where(tenant: current_user.tenant).recent.limit(5).includes(:user)
-        )
+        ),
+        cases_over_time: build_cases_over_time(cases, range)
       }
     }
+  end
+
+  private
+
+  def build_cases_over_time(cases, range)
+    scope = range ? cases.where(created_at: range) : cases
+    scope.group("DATE(created_at)").count.transform_keys(&:to_s)
   end
 end

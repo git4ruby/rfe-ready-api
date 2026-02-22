@@ -18,6 +18,15 @@ gem "devise", "~> 4.9"
 gem "devise-jwt", "~> 0.12"
 gem "pundit", "~> 2.3"
 
+# Two-Factor Authentication
+gem "rotp", "~> 6.3"
+gem "rqrcode", "~> 2.2"
+
+# SSO / OAuth
+gem "omniauth", "~> 2.1"
+gem "omniauth-google-oauth2", "~> 1.1"
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+
 # Multi-tenancy
 gem "acts_as_tenant", "~> 1.0"
 

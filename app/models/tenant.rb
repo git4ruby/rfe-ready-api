@@ -6,6 +6,8 @@ class Tenant < ApplicationRecord
   has_many :knowledge_docs, dependent: :destroy
   has_many :embeddings, dependent: :destroy
   has_many :audit_logs, dependent: :destroy
+  has_many :feature_flags, dependent: :destroy
+  has_many :backups, dependent: :destroy
 
   enum :plan, { trial: 0, basic: 1, professional: 2, enterprise: 3 }
   enum :status, { active: 0, suspended: 1, cancelled: 2 }
