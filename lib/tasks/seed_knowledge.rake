@@ -8,7 +8,7 @@ namespace :knowledge do
       exit 1
     end
 
-    tenant = Tenant.find_by!(slug: "demo-immigration-law-firm")
+    tenant = Tenant.find_by!(slug: "demo-firm")
     admin  = User.find_by!(email: "admin@rfeready.com")
 
     ActsAsTenant.with_tenant(tenant) do
