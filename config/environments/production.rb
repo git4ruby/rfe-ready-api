@@ -41,7 +41,7 @@ Rails.application.configure do
   config.active_support.report_deprecations = false
 
   # In-memory cache (sufficient for single-server deployment).
-  config.cache_store = :memory_store, { size: 64.megabytes }
+  config.cache_store = :memory_store, { size: 67_108_864 }
 
   # Use Sidekiq for background job processing.
   config.active_job.queue_adapter = :sidekiq
