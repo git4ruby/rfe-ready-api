@@ -69,6 +69,9 @@ gem "ruby-openai", "~> 7.0"
 
 # Monitoring
 gem "lograge", "~> 0.14"
+gem "sentry-ruby", "~> 5.0"
+gem "sentry-rails", "~> 5.0"
+gem "sentry-sidekiq", "~> 5.0"
 
 # Email
 gem "letter_opener", group: :development
