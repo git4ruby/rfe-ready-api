@@ -61,7 +61,7 @@ class ExportService
   def generate_pdf
     pdf = Prawn::Document.new(
       page_size: "LETTER",
-      margin: [72, 72, 72, 72], # 1 inch margins
+      margin: [ 72, 72, 72, 72 ], # 1 inch margins
       info: {
         Title: "RFE Response - #{rfe_case.case_number}",
         Author: tenant.name,
@@ -93,20 +93,20 @@ class ExportService
     pdf.move_down 20
 
     details = [
-      ["Case Number:", rfe_case.case_number],
-      ["USCIS Receipt #:", rfe_case.uscis_receipt_number || "N/A"],
-      ["Visa Type:", rfe_case.visa_type],
-      ["Petitioner:", rfe_case.petitioner_name],
-      ["Beneficiary:", rfe_case.beneficiary_name || "N/A"],
-      ["RFE Received:", rfe_case.rfe_received_date&.strftime("%B %d, %Y") || "N/A"],
-      ["Response Deadline:", rfe_case.rfe_deadline&.strftime("%B %d, %Y") || "N/A"],
-      ["Prepared By:", attorney_name],
-      ["Date:", Date.current.strftime("%B %d, %Y")]
+      [ "Case Number:", rfe_case.case_number ],
+      [ "USCIS Receipt #:", rfe_case.uscis_receipt_number || "N/A" ],
+      [ "Visa Type:", rfe_case.visa_type ],
+      [ "Petitioner:", rfe_case.petitioner_name ],
+      [ "Beneficiary:", rfe_case.beneficiary_name || "N/A" ],
+      [ "RFE Received:", rfe_case.rfe_received_date&.strftime("%B %d, %Y") || "N/A" ],
+      [ "Response Deadline:", rfe_case.rfe_deadline&.strftime("%B %d, %Y") || "N/A" ],
+      [ "Prepared By:", attorney_name ],
+      [ "Date:", Date.current.strftime("%B %d, %Y") ]
     ]
 
     pdf.table(details, position: :center, width: 400) do |t|
       t.cells.borders = []
-      t.cells.padding = [4, 8]
+      t.cells.padding = [ 4, 8 ]
       t.columns(0).font_style = :bold
       t.columns(0).width = 160
     end
@@ -185,7 +185,7 @@ class ExportService
     pdf.text "EXHIBIT LIST", size: 14, style: :bold, align: :center
     pdf.move_down 20
 
-    table_data = [["Exhibit", "Title", "Description"]]
+    table_data = [ [ "Exhibit", "Title", "Description" ] ]
     exhibits.each do |exhibit|
       table_data << [
         exhibit.label,
@@ -197,8 +197,8 @@ class ExportService
     pdf.table(table_data, header: true, width: pdf.bounds.width) do |t|
       t.row(0).font_style = :bold
       t.row(0).background_color = "E8E8E8"
-      t.cells.padding = [6, 8]
-      t.cells.borders = [:bottom]
+      t.cells.padding = [ 6, 8 ]
+      t.cells.borders = [ :bottom ]
       t.cells.border_width = 0.5
       t.columns(0).width = 60
       t.columns(1).width = 160
@@ -207,7 +207,7 @@ class ExportService
 
   def pdf_page_numbers(pdf)
     pdf.number_pages "Page <page> of <total>",
-      at: [pdf.bounds.right - 150, -4],
+      at: [ pdf.bounds.right - 150, -4 ],
       size: 9,
       align: :right,
       start_count_at: 1
@@ -218,7 +218,7 @@ class ExportService
   # ===========================================================================
 
   def generate_docx
-    tempfile = Tempfile.new(["rfe_export", ".docx"])
+    tempfile = Tempfile.new([ "rfe_export", ".docx" ])
     begin
       Caracal::Document.save(tempfile.path) do |docx|
         docx_cover_page(docx)
@@ -236,15 +236,15 @@ class ExportService
   def docx_cover_page(docx)
     firm_name = tenant&.name || "Law Firm"
     case_details = [
-      ["Case Number", rfe_case.case_number],
-      ["USCIS Receipt #", rfe_case.uscis_receipt_number || "N/A"],
-      ["Visa Type", rfe_case.visa_type],
-      ["Petitioner", rfe_case.petitioner_name],
-      ["Beneficiary", rfe_case.beneficiary_name || "N/A"],
-      ["RFE Received", rfe_case.rfe_received_date&.strftime("%B %d, %Y") || "N/A"],
-      ["Response Deadline", rfe_case.rfe_deadline&.strftime("%B %d, %Y") || "N/A"],
-      ["Prepared By", attorney_name],
-      ["Date", Date.current.strftime("%B %d, %Y")]
+      [ "Case Number", rfe_case.case_number ],
+      [ "USCIS Receipt #", rfe_case.uscis_receipt_number || "N/A" ],
+      [ "Visa Type", rfe_case.visa_type ],
+      [ "Petitioner", rfe_case.petitioner_name ],
+      [ "Beneficiary", rfe_case.beneficiary_name || "N/A" ],
+      [ "RFE Received", rfe_case.rfe_received_date&.strftime("%B %d, %Y") || "N/A" ],
+      [ "Response Deadline", rfe_case.rfe_deadline&.strftime("%B %d, %Y") || "N/A" ],
+      [ "Prepared By", attorney_name ],
+      [ "Date", Date.current.strftime("%B %d, %Y") ]
     ]
 
     docx.p do
@@ -334,7 +334,7 @@ class ExportService
     docx.h1 "Exhibit List"
     docx.p
 
-    docx.table exhibits.map { |e| [e.label, e.title, e.description.to_s.truncate(120)] } do
+    docx.table exhibits.map { |e| [ e.label, e.title, e.description.to_s.truncate(120) ] } do
       border_color "999999"
       cell_style rows[0], bold: true, background: "E8E8E8"
     end

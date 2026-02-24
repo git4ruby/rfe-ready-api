@@ -50,7 +50,7 @@ class RfeCase < ApplicationRecord
     end
 
     event :archive do
-      transitions from: [:draft, :review, :responded], to: :archived
+      transitions from: [ :draft, :review, :responded ], to: :archived
     end
 
     event :reopen do

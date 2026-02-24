@@ -12,6 +12,6 @@ class CreateBackups < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :backups, [:tenant_id, :created_at]
+    add_index :backups, [ :tenant_id, :created_at ]
   end
 end

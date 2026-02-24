@@ -16,7 +16,7 @@ RSpec.describe EvidenceChecklistPolicy, type: :policy do
 
   permissions :update?, :toggle_collected? do
     it "permits admin, attorney, paralegal" do
-      [admin, attorney, paralegal].each do |user|
+      [ admin, attorney, paralegal ].each do |user|
         expect(subject).to permit(user, item)
       end
     end

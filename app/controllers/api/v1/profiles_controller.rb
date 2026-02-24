@@ -39,7 +39,7 @@ class Api::V1::ProfilesController < Api::V1::BaseController
 
   def profile_params
     params.require(:profile).permit(:first_name, :last_name, :bar_number,
-      preferences: [:timezone, :dashboard_layout, :locale, :onboarding_completed,
-                     :notify_case_assigned, :notify_deadline_approaching, :notify_draft_ready])
+      preferences: [ :timezone, :dashboard_layout, :locale, :onboarding_completed,
+                     :notify_case_assigned, :notify_deadline_approaching, :notify_draft_ready ])
   end
 end

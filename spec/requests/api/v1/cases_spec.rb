@@ -242,7 +242,7 @@ RSpec.describe "Api::V1::Cases", type: :request do
 
     it "bulk archives cases" do
       post "/api/v1/cases/bulk_update_status",
-           params: { ids: [case1.id, case2.id], action_name: "archive" }.to_json,
+           params: { ids: [ case1.id, case2.id ], action_name: "archive" }.to_json,
            headers: authenticated_headers(admin)
 
       expect(response).to have_http_status(:ok)
@@ -252,7 +252,7 @@ RSpec.describe "Api::V1::Cases", type: :request do
 
     it "rejects invalid action" do
       post "/api/v1/cases/bulk_update_status",
-           params: { ids: [case1.id], action_name: "archive" }.to_json,
+           params: { ids: [ case1.id ], action_name: "archive" }.to_json,
            headers: authenticated_headers(viewer)
 
       # Viewer can't archive, so all should fail

@@ -17,7 +17,7 @@ class CreateRfeSections < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :rfe_sections, [:case_id, :position]
+    add_index :rfe_sections, [ :case_id, :position ]
     add_index :rfe_sections, :section_type
   end
 end

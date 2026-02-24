@@ -15,7 +15,7 @@ RSpec.describe AuditLogPolicy, type: :policy do
     end
 
     it "denies non-admin roles" do
-      [attorney, paralegal, viewer].each do |user|
+      [ attorney, paralegal, viewer ].each do |user|
         expect(subject).not_to permit(user, AuditLog)
       end
     end

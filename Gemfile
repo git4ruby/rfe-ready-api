@@ -77,7 +77,7 @@ gem "sentry-sidekiq", "~> 5.0"
 gem "letter_opener", group: :development
 
 # Environment
-gem "dotenv-rails", groups: [:development, :test]
+gem "dotenv-rails", groups: [ :development, :test ]
 
 # Windows timezone data
 gem "tzinfo-data", platforms: %i[windows jruby]

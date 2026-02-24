@@ -14,7 +14,7 @@ class CreateExhibits < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :exhibits, [:case_id, :position]
-    add_index :exhibits, [:case_id, :label], unique: true
+    add_index :exhibits, [ :case_id, :position ]
+    add_index :exhibits, [ :case_id, :label ], unique: true
   end
 end

@@ -61,7 +61,7 @@ namespace :knowledge do
         { file: "Detailed_Job_Description.txt",        doc_type: :firm_knowledge, visa_type: "H-1B", rfe_category: "Specialty Occupation",            title: "Detailed Job Description - Software Engineer" },
         { file: "Academic_Transcripts.txt",            doc_type: :firm_knowledge, visa_type: "H-1B", rfe_category: "Beneficiary Qualifications",     title: "Academic Transcripts - Sample" },
         { file: "Work_Experience_Letters.txt",         doc_type: :firm_knowledge, visa_type: "H-1B", rfe_category: "Beneficiary Qualifications",     title: "Work Experience Letters - Sample" },
-        { file: "Industry_Job_Postings.txt",           doc_type: :firm_knowledge, visa_type: "H-1B", rfe_category: "Specialty Occupation",            title: "Industry Job Postings - Software Engineering" },
+        { file: "Industry_Job_Postings.txt",           doc_type: :firm_knowledge, visa_type: "H-1B", rfe_category: "Specialty Occupation",            title: "Industry Job Postings - Software Engineering" }
       ]
 
       created = 0

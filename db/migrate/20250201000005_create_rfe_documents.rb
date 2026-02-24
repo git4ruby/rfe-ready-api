@@ -19,7 +19,7 @@ class CreateRfeDocuments < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :rfe_documents, [:case_id, :document_type]
+    add_index :rfe_documents, [ :case_id, :document_type ]
     add_index :rfe_documents, :processing_status
   end
 end

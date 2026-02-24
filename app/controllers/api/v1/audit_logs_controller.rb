@@ -46,7 +46,7 @@ class Api::V1::AuditLogsController < Api::V1::BaseController
   def generate_csv(logs)
     require "csv"
     CSV.generate do |csv|
-      csv << ["Date/Time", "User", "Email", "Action", "Resource Type", "Resource", "IP Address", "Changes"]
+      csv << [ "Date/Time", "User", "Email", "Action", "Resource Type", "Resource", "IP Address", "Changes" ]
       logs.each do |log|
         changes = log.changes_data&.map { |k, v| "#{k}: #{v[0]} → #{v[1]}" }&.join("; ") || ""
         csv << [
@@ -69,7 +69,7 @@ class Api::V1::AuditLogsController < Api::V1::BaseController
     pdf.text "Generated: #{Time.current.strftime('%B %d, %Y %I:%M %p')}", size: 10, color: "666666"
     pdf.move_down 15
 
-    table_data = [["Date/Time", "User", "Action", "Resource", "IP Address"]]
+    table_data = [ [ "Date/Time", "User", "Action", "Resource", "IP Address" ] ]
     logs.each do |log|
       table_data << [
         log.created_at&.strftime("%m/%d/%Y %I:%M %p") || "",
@@ -80,7 +80,7 @@ class Api::V1::AuditLogsController < Api::V1::BaseController
       ]
     end
 
-    pdf.table(table_data, header: true, width: pdf.bounds.width, cell_style: { size: 8, padding: [4, 6] }) do |t|
+    pdf.table(table_data, header: true, width: pdf.bounds.width, cell_style: { size: 8, padding: [ 4, 6 ] }) do |t|
       t.row(0).font_style = :bold
       t.row(0).background_color = "f3f4f6"
     end

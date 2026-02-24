@@ -73,13 +73,13 @@ class EmbeddingService
   def chunk_text(text)
     # Split by words, approximate tokens as words * 1.3
     words = text.split
-    return [text] if words.size <= CHUNK_SIZE
+    return [ text ] if words.size <= CHUNK_SIZE
 
     chunks = []
     start_idx = 0
 
     while start_idx < words.size
-      end_idx = [start_idx + CHUNK_SIZE, words.size].min
+      end_idx = [ start_idx + CHUNK_SIZE, words.size ].min
       chunk = words[start_idx...end_idx].join(" ")
       chunks << chunk
       start_idx += (CHUNK_SIZE - CHUNK_OVERLAP)

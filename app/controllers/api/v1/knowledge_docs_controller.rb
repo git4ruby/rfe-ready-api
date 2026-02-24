@@ -66,7 +66,7 @@ class Api::V1::KnowledgeDocsController < Api::V1::BaseController
     docs = []
     files.each do |file|
       doc = KnowledgeDoc.new(
-        title: file.original_filename.sub(/\.[^.]+\z/, '').titleize,
+        title: file.original_filename.sub(/\.[^.]+\z/, "").titleize,
         doc_type: params[:doc_type] || "firm_knowledge",
         visa_type: params[:visa_type].presence,
         rfe_category: params[:rfe_category].presence,

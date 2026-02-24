@@ -18,7 +18,7 @@ class CreateEvidenceChecklists < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :evidence_checklists, [:rfe_section_id, :position]
+    add_index :evidence_checklists, [ :rfe_section_id, :position ]
     add_index :evidence_checklists, :priority
   end
 end

@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "332a402b60b7fea9948e1ea83a4f79d6e9ae6c1c24b780d095d4110a198b9613",
+      "code": "params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :role, :bar_number)",
+      "note": "Intentional: role assignment authorized via Pundit"
+    },
+    {
+      "fingerprint": "769beaf21126cfdba609637d374b3fd529d7f212ca381fcc162968d2f6d8703e",
+      "code": "params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :role, :bar_number)",
+      "note": "Intentional: role assignment authorized via Pundit"
+    },
+    {
+      "fingerprint": "8874b2d6a9f5db4bb644031f664912741e0975d08957fefda0afe02d2b381fda",
+      "code": "params.require(:user).permit(:first_name, :last_name, :role, :status, :bar_number)",
+      "note": "Intentional: role assignment authorized via Pundit"
+    },
+    {
+      "fingerprint": "896f551420856bc23f726e417275ece252b78e360c06ad7520b80130146574a3",
+      "code": "params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :role, :bar_number)",
+      "note": "Intentional: role assignment authorized via Pundit"
+    }
+  ],
+  "updated": "",
+  "brakeman_version": "8.0.2"
+}

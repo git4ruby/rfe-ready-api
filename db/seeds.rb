@@ -158,7 +158,7 @@ seed_case(tenant: tenant3, attorney: attorney3, case_number: "LIG-2024-002", vis
 # Feature Flags (for all tenants)
 # ============================================================
 puts "\n--- Feature Flags ---"
-[tenant1, tenant2, tenant3].each do |tenant|
+[ tenant1, tenant2, tenant3 ].each do |tenant|
   ActsAsTenant.current_tenant = tenant
   FeatureFlag.seed_defaults(tenant)
   puts "  Seeded feature flags for #{tenant.name}"

@@ -76,7 +76,7 @@ RSpec.describe UserPolicy, type: :policy do
   describe "Scope" do
     it "returns users in the same tenant" do
       users = UserPolicy::Scope.new(admin, User).resolve
-      expect(users.pluck(:tenant_id).uniq).to eq([tenant.id])
+      expect(users.pluck(:tenant_id).uniq).to eq([ tenant.id ])
     end
   end
 end

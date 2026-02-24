@@ -41,7 +41,7 @@ class TextExtractionService
   end
 
   def extract_pdf_text
-    tempfile = Tempfile.new(["rfe_doc", ".pdf"])
+    tempfile = Tempfile.new([ "rfe_doc", ".pdf" ])
     begin
       tempfile.binmode
       tempfile.write(document.file.download)
@@ -60,7 +60,7 @@ class TextExtractionService
 
   def extract_docx_text
     # Basic DOCX extraction — reads the XML content
-    tempfile = Tempfile.new(["rfe_doc", ".docx"])
+    tempfile = Tempfile.new([ "rfe_doc", ".docx" ])
     begin
       tempfile.binmode
       tempfile.write(document.file.download)

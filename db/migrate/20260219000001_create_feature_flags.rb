@@ -10,6 +10,6 @@ class CreateFeatureFlags < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :feature_flags, [:tenant_id, :name], unique: true
+    add_index :feature_flags, [ :tenant_id, :name ], unique: true
   end
 end

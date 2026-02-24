@@ -15,7 +15,7 @@ class CreateKnowledgeDocs < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :knowledge_docs, [:tenant_id, :doc_type]
-    add_index :knowledge_docs, [:visa_type, :rfe_category]
+    add_index :knowledge_docs, [ :tenant_id, :doc_type ]
+    add_index :knowledge_docs, [ :visa_type, :rfe_category ]
   end
 end

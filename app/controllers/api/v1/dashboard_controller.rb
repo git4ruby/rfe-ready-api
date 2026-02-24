@@ -6,11 +6,11 @@ class Api::V1::DashboardController < Api::V1::BaseController
   def index
     period = params[:period] || "30d"
     range = case period
-            when "7d" then 7.days.ago..Time.current
-            when "90d" then 90.days.ago..Time.current
-            when "all" then nil
-            else 30.days.ago..Time.current
-            end
+    when "7d" then 7.days.ago..Time.current
+    when "90d" then 90.days.ago..Time.current
+    when "all" then nil
+    else 30.days.ago..Time.current
+    end
 
     cases = RfeCase.where(tenant: current_user.tenant)
     knowledge_docs = KnowledgeDoc.where(tenant: current_user.tenant)
@@ -31,7 +31,7 @@ class Api::V1::DashboardController < Api::V1::BaseController
         knowledge_stats: {
           total_docs: knowledge_docs.count,
           by_doc_type: knowledge_docs.group(:doc_type).count,
-          by_visa_type: knowledge_docs.where.not(visa_type: [nil, ""]).group(:visa_type).count,
+          by_visa_type: knowledge_docs.where.not(visa_type: [ nil, "" ]).group(:visa_type).count,
           embedded_count: embedded_ids.size,
           pending_count: knowledge_docs.count - embedded_ids.size
         },
