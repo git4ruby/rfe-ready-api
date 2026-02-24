@@ -41,7 +41,7 @@ FactoryBot.define do
     end
 
     trait :with_attorney do
-      association :assigned_attorney, factory: [:user, :attorney]
+      association :assigned_attorney, factory: [ :user, :attorney ]
     end
   end
 end

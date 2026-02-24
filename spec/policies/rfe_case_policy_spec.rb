@@ -14,7 +14,7 @@ RSpec.describe RfeCasePolicy, type: :policy do
 
   permissions :show? do
     it "permits all roles" do
-      [admin, attorney, paralegal, viewer].each do |user|
+      [ admin, attorney, paralegal, viewer ].each do |user|
         expect(subject).to permit(user, rfe_case)
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe RfeCasePolicy, type: :policy do
 
   permissions :start_analysis?, :archive? do
     it "permits admin, attorney, paralegal" do
-      [admin, attorney, paralegal].each do |user|
+      [ admin, attorney, paralegal ].each do |user|
         expect(subject).to permit(user, rfe_case)
       end
     end

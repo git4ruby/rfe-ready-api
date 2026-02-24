@@ -29,7 +29,7 @@ class FeatureFlag < ApplicationRecord
       { name: "export_pdf", enabled: true, allowed_roles: %w[admin attorney], allowed_plans: [] },
       { name: "knowledge_base", enabled: true, allowed_roles: [], allowed_plans: [] },
       { name: "draft_generation", enabled: true, allowed_roles: %w[admin attorney], allowed_plans: [] },
-      { name: "audit_log_export", enabled: true, allowed_roles: %w[admin], allowed_plans: %w[professional enterprise] },
+      { name: "audit_log_export", enabled: true, allowed_roles: %w[admin], allowed_plans: %w[professional enterprise] }
     ]
 
     defaults.each do |attrs|

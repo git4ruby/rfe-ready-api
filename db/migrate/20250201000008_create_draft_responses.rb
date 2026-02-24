@@ -19,7 +19,7 @@ class CreateDraftResponses < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :draft_responses, [:rfe_section_id, :position]
+    add_index :draft_responses, [ :rfe_section_id, :position ]
     add_index :draft_responses, :status
   end
 end

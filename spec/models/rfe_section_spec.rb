@@ -36,7 +36,7 @@ RSpec.describe RfeSection, type: :model do
         section_b = create(:rfe_section, tenant: tenant, case: rfe_case, position: 2)
         section_a = create(:rfe_section, tenant: tenant, case: rfe_case, position: 1)
 
-        expect(RfeSection.ordered).to eq([section_a, section_b])
+        expect(RfeSection.ordered).to eq([ section_a, section_b ])
       end
     end
 

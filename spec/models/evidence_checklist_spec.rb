@@ -32,7 +32,7 @@ RSpec.describe EvidenceChecklist, type: :model do
         item_b = create(:evidence_checklist, tenant: tenant, case: rfe_case, rfe_section: section, position: 2)
         item_a = create(:evidence_checklist, tenant: tenant, case: rfe_case, rfe_section: section, position: 1)
 
-        expect(EvidenceChecklist.ordered).to eq([item_a, item_b])
+        expect(EvidenceChecklist.ordered).to eq([ item_a, item_b ])
       end
     end
 

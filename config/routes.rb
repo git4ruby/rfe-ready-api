@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       sessions: "api/v1/sessions",
       registrations: "api/v1/registrations"
     },
-    skip: [:passwords],
+    skip: [ :passwords ],
     defaults: { format: :json }
 
   # Password reset (standalone, not Devise controller)
@@ -26,15 +26,15 @@ Rails.application.routes.draw do
       get "health", to: "health#show"
 
       # Profile (current user)
-      resource :profile, only: [:show, :update] do
+      resource :profile, only: [ :show, :update ] do
         patch :change_password, on: :member
       end
 
       # Tenant settings (current tenant only)
-      resource :tenant, only: [:show, :update]
+      resource :tenant, only: [ :show, :update ]
 
       # User management (admin)
-      resources :users, only: [:index, :show, :create, :update] do
+      resources :users, only: [ :index, :show, :create, :update ] do
         collection do
           post :bulk_update_status
         end
@@ -61,21 +61,21 @@ Rails.application.routes.draw do
           get :activity
         end
 
-        resources :rfe_documents, only: [:index, :show, :create, :destroy]
+        resources :rfe_documents, only: [ :index, :show, :create, :destroy ]
 
-        resources :rfe_sections, only: [:index, :show, :update] do
+        resources :rfe_sections, only: [ :index, :show, :update ] do
           member do
             post :reclassify
           end
         end
 
-        resources :evidence_checklists, only: [:index, :update] do
+        resources :evidence_checklists, only: [ :index, :update ] do
           member do
             patch :toggle_collected
           end
         end
 
-        resources :draft_responses, only: [:index, :show, :update] do
+        resources :draft_responses, only: [ :index, :show, :update ] do
           collection do
             post :generate_all
           end
@@ -116,17 +116,17 @@ Rails.application.routes.draw do
       get "search", to: "search#index"
 
       # Feature flags
-      resources :feature_flags, only: [:index]
+      resources :feature_flags, only: [ :index ]
 
       # Backups (admin only)
-      resources :backups, only: [:index, :create, :destroy] do
+      resources :backups, only: [ :index, :create, :destroy ] do
         member do
           get :download
         end
       end
 
       # Audit logs (admin only)
-      resources :audit_logs, only: [:index] do
+      resources :audit_logs, only: [ :index ] do
         collection do
           get :export
         end
@@ -141,7 +141,7 @@ Rails.application.routes.draw do
             patch :change_status
             patch :change_plan
           end
-          resources :users, only: [:index, :create]
+          resources :users, only: [ :index, :create ]
         end
       end
     end

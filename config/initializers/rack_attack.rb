@@ -36,7 +36,7 @@ class Rack::Attack
         "X-RateLimit-Remaining" => "0",
         "X-RateLimit-Reset" => (Time.now + retry_after.to_i).to_i.to_s
       },
-      [{ error: "Rate limit exceeded. Try again in #{retry_after} seconds." }.to_json]
+      [ { error: "Rate limit exceeded. Try again in #{retry_after} seconds." }.to_json ]
     ]
   end
 
@@ -59,12 +59,12 @@ class RateLimitHeaders
       match_data = env["rack.attack.throttle_data"]&.dig("api/ip")
       if match_data
         headers["X-RateLimit-Limit"] = match_data[:limit].to_s
-        headers["X-RateLimit-Remaining"] = [match_data[:limit] - match_data[:count], 0].max.to_s
+        headers["X-RateLimit-Remaining"] = [ match_data[:limit] - match_data[:count], 0 ].max.to_s
         headers["X-RateLimit-Reset"] = (match_data[:epoch_time] + match_data[:period]).to_i.to_s
       end
     end
 
-    [status, headers, body]
+    [ status, headers, body ]
   end
 end
 

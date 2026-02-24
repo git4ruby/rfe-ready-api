@@ -36,7 +36,7 @@ RSpec.describe Exhibit, type: :model do
         exhibit_b = create(:exhibit, tenant: tenant, case: rfe_case, position: 2)
         exhibit_a = create(:exhibit, tenant: tenant, case: rfe_case, position: 1)
 
-        expect(Exhibit.ordered).to eq([exhibit_a, exhibit_b])
+        expect(Exhibit.ordered).to eq([ exhibit_a, exhibit_b ])
       end
     end
   end

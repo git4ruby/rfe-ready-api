@@ -96,3 +96,24 @@ jobs:
         with:
           name: coverage-report
           path: coverage/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [scan_ruby, lint, test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Deploy to production
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/rfe-pilot/rfe-ready-api
+            git pull origin main
+            cd /home/ubuntu/rfe-pilot
+            docker compose --env-file .env.production -f docker-compose.production.yml build rails
+            docker compose --env-file .env.production -f docker-compose.production.yml up -d rails sidekiq
+            sleep 10
+            curl -f http://localhost/up || exit 1

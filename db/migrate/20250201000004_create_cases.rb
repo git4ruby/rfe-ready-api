@@ -28,7 +28,7 @@ class CreateCases < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :cases, [:tenant_id, :case_number], unique: true
+    add_index :cases, [ :tenant_id, :case_number ], unique: true
     add_index :cases, :uscis_receipt_number
     add_index :cases, :status
     add_index :cases, :beneficiary_name_bidx

@@ -26,7 +26,7 @@ RSpec.describe "Api::V1::Users", type: :request do
 
       body = JSON.parse(response.body)
       tenant_ids = body["data"].map { |u| u["id"] }
-      expect(User.where(id: tenant_ids).pluck(:tenant_id).uniq).to eq([tenant.id])
+      expect(User.where(id: tenant_ids).pluck(:tenant_id).uniq).to eq([ tenant.id ])
     end
   end
 

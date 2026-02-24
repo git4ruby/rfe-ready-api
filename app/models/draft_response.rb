@@ -13,7 +13,7 @@ class DraftResponse < ApplicationRecord
 
   scope :ordered, -> { order(:position) }
   scope :approved, -> { where(status: :approved) }
-  scope :pending_review, -> { where(status: [:draft, :editing]) }
+  scope :pending_review, -> { where(status: [ :draft, :editing ]) }
 
   def approve!(feedback: nil)
     self.attorney_feedback = feedback if feedback

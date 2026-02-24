@@ -96,7 +96,7 @@ class Api::V1::TwoFactorController < Api::V1::BaseController
 
     # Check backup codes
     if current_user.otp_backup_codes.include?(code)
-      remaining = current_user.otp_backup_codes - [code]
+      remaining = current_user.otp_backup_codes - [ code ]
       current_user.update!(otp_backup_codes: remaining)
       render json: { data: { valid: true, backup_code_used: true, remaining_backup_codes: remaining.size } }
       return

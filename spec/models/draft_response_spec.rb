@@ -30,7 +30,7 @@ RSpec.describe DraftResponse, type: :model do
         draft_b = create(:draft_response, tenant: tenant, case: rfe_case, rfe_section: section, position: 2)
         draft_a = create(:draft_response, tenant: tenant, case: rfe_case, rfe_section: section, position: 1)
 
-        expect(DraftResponse.ordered).to eq([draft_a, draft_b])
+        expect(DraftResponse.ordered).to eq([ draft_a, draft_b ])
       end
     end
 

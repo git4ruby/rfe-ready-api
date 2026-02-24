@@ -50,6 +50,6 @@ class CreateUsers < ActiveRecord::Migration[8.0]
     add_index :users, :confirmation_token, unique: true
     add_index :users, :unlock_token, unique: true
     add_index :users, :jti, unique: true
-    add_index :users, [:tenant_id, :role]
+    add_index :users, [ :tenant_id, :role ]
   end
 end
