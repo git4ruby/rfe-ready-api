@@ -74,6 +74,7 @@ gem "sentry-rails", "~> 5.0"
 gem "sentry-sidekiq", "~> 5.0"
 
 # Email
+gem "resend", "~> 0.17"
 gem "letter_opener", group: :development
 
 # Environment
