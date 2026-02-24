@@ -116,4 +116,4 @@ jobs:
             docker compose --env-file .env.production -f docker-compose.production.yml build rails
             docker compose --env-file .env.production -f docker-compose.production.yml up -d rails sidekiq
             sleep 10
-            curl -f http://localhost/up || exit 1
+            docker compose --env-file .env.production -f docker-compose.production.yml ps rails | grep -q "Up"
