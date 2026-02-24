@@ -1,0 +1,13 @@
+<h2>Confirm your email</h2>
+
+<p>Hello <%= @resource.first_name %>,</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p style="text-align: center; margin: 24px 0;">
+  <a href="<%= ENV.fetch('FRONTEND_URL', 'http://localhost:5173') %>/login?confirmed=true" class="btn">
+    Confirm my account
+  </a>
+</p>
+
+<p>If you didn't create an account, please ignore this email.</p>

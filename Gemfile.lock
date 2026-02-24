@@ -129,6 +129,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    csv (3.3.5)
     database_cleaner-active_record (2.2.2)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0)
@@ -195,6 +196,10 @@ GEM
     hashery (2.1.2)
     hashie (5.1.0)
       logger
+    httparty (0.24.2)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     io-console (0.8.2)
@@ -406,6 +411,8 @@ GEM
       io-console (~> 0.5)
     request_store (1.7.0)
       rack (>= 1.4)
+    resend (0.27.0)
+      httparty (>= 0.21.0)
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
@@ -581,6 +588,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 8.0.4)
   redis (~> 5.0)
+  resend (~> 0.17)
   rotp (~> 6.3)
   rqrcode (~> 2.2)
   rspec-rails (~> 6.1)

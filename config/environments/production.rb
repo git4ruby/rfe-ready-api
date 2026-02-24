@@ -51,18 +51,10 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "app.rfeready.com") }
+  config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "rfeready.com") }
 
-  # SMTP configuration via environment variables.
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: ENV.fetch("SMTP_ADDRESS", "smtp.gmail.com"),
-    port: ENV.fetch("SMTP_PORT", 587).to_i,
-    user_name: ENV["SMTP_USERNAME"],
-    password: ENV["SMTP_PASSWORD"],
-    authentication: :plain,
-    enable_starttls_auto: true
-  }
+  # Use Resend for transactional email delivery.
+  config.action_mailer.delivery_method = :resend
 
   # Use Amazon S3 for file storage in production.
   config.active_storage.service = :amazon
