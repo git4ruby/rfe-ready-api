@@ -1,30 +1,45 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RFE Ready</title>
   </head>
-  <body style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7;">
+  <body style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased;">
+    <!-- Outer wrapper -->
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f4f4f7;">
       <tr>
-        <td align="center" style="padding: 40px 16px;">
-          <table role="presentation" width="570" cellpadding="0" cellspacing="0" style="max-width: 570px; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <td align="center" valign="top" style="padding: 40px 10px;">
+          <!-- Email container -->
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="560" style="width: 560px; max-width: 560px; background-color: #ffffff; border-radius: 8px; border: 1px solid #e8e8eb;">
             <!-- Header -->
             <tr>
-              <td align="center" style="background-color: #4f46e5; padding: 28px 32px;">
-                <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">RFE Ready</h1>
+              <td align="center" valign="middle" style="background-color: #4f46e5; padding: 28px 40px; border-radius: 8px 8px 0 0;">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="center" style="font-size: 22px; font-weight: 700; color: #ffffff; font-family: Arial, Helvetica, sans-serif; letter-spacing: -0.02em;">
+                      RFE Ready
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
             <!-- Body -->
             <tr>
-              <td style="padding: 36px 32px; color: #51545e; font-size: 15px; line-height: 1.7;">
+              <td style="padding: 36px 40px; color: #51545e; font-size: 15px; line-height: 26px; font-family: Arial, Helvetica, sans-serif;">
                 <%= yield %>
               </td>
             </tr>
             <!-- Footer -->
             <tr>
-              <td align="center" style="padding: 24px 32px; border-top: 1px solid #f0f0f3;">
-                <p style="margin: 0; color: #9ca3af; font-size: 12px;">&copy; <%= Date.current.year %> RFE Ready. All rights reserved.</p>
+              <td align="center" style="padding: 20px 40px 28px; border-top: 1px solid #eaeaec;">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="center" style="font-size: 12px; color: #9ca3af; font-family: Arial, Helvetica, sans-serif;">
+                      &copy; <%= Date.current.year %> RFE Ready. All rights reserved.
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>
