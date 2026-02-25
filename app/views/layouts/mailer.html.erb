@@ -3,34 +3,33 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-      body { margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-      .email-wrapper { width: 100%; background-color: #f4f4f7; padding: 40px 0; }
-      .email-content { max-width: 570px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-      .email-header { background-color: #4f46e5; padding: 24px 32px; text-align: center; }
-      .email-header h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-      .email-body { padding: 32px; color: #51545e; font-size: 15px; line-height: 1.6; }
-      .email-body h2 { color: #333; font-size: 18px; margin-top: 0; }
-      .email-body p { margin: 0 0 16px; }
-      .email-body .btn { display: inline-block; background-color: #4f46e5; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; }
-      .email-body .info-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; margin: 16px 0; }
-      .email-body .info-box strong { color: #333; }
-      .email-footer { padding: 24px 32px; text-align: center; color: #9ca3af; font-size: 12px; border-top: 1px solid #f0f0f3; }
-    </style>
   </head>
-  <body>
-    <div class="email-wrapper">
-      <div class="email-content">
-        <div class="email-header">
-          <h1>RFE Ready</h1>
-        </div>
-        <div class="email-body">
-          <%= yield %>
-        </div>
-        <div class="email-footer">
-          <p>&copy; <%= Date.current.year %> RFE Ready. All rights reserved.</p>
-        </div>
-      </div>
-    </div>
+  <body style="margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7;">
+      <tr>
+        <td align="center" style="padding: 40px 16px;">
+          <table role="presentation" width="570" cellpadding="0" cellspacing="0" style="max-width: 570px; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <!-- Header -->
+            <tr>
+              <td align="center" style="background-color: #4f46e5; padding: 28px 32px;">
+                <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.02em;">RFE Ready</h1>
+              </td>
+            </tr>
+            <!-- Body -->
+            <tr>
+              <td style="padding: 36px 32px; color: #51545e; font-size: 15px; line-height: 1.7;">
+                <%= yield %>
+              </td>
+            </tr>
+            <!-- Footer -->
+            <tr>
+              <td align="center" style="padding: 24px 32px; border-top: 1px solid #f0f0f3;">
+                <p style="margin: 0; color: #9ca3af; font-size: 12px;">&copy; <%= Date.current.year %> RFE Ready. All rights reserved.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>
