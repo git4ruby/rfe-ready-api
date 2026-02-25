@@ -94,7 +94,7 @@ group :development, :test do
 end
 
 group :test do
-  gem "shoulda-matchers", "~> 6.0"
+  gem "shoulda-matchers", "~> 7.0"
   gem "pundit-matchers", "~> 3.1"
   gem "webmock", "~> 3.0"
   gem "simplecov", require: false
