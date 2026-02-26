@@ -121,7 +121,11 @@ Rails.application.routes.draw do
       get "search", to: "search#index"
 
       # Feature flags
-      resources :feature_flags, only: [ :index ]
+      resources :feature_flags, only: [ :index, :create, :update, :destroy ] do
+        collection do
+          get :manage
+        end
+      end
 
       # Backups (admin only)
       resources :backups, only: [ :index, :create, :destroy ] do
