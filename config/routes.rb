@@ -59,6 +59,7 @@ Rails.application.routes.draw do
           post :export
           get :export
           get :activity
+          get :similar
         end
 
         resources :rfe_documents, only: [ :index, :show, :create, :destroy ]

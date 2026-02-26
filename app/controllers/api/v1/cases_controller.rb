@@ -1,7 +1,7 @@
 class Api::V1::CasesController < Api::V1::BaseController
   include Pagy::Backend
 
-  before_action :set_case, only: %i[show update destroy start_analysis analysis_status assign_attorney mark_reviewed mark_responded archive reopen export activity]
+  before_action :set_case, only: %i[show update destroy start_analysis analysis_status assign_attorney mark_reviewed mark_responded archive reopen export activity similar]
 
   # GET /api/v1/cases
   def index
@@ -176,6 +176,19 @@ class Api::V1::CasesController < Api::V1::BaseController
     authorize @case, :show?
     logs = AuditLog.for_record(@case).recent.includes(:user).limit(50)
     render json: { data: AuditLogSerializer.render_as_hash(logs) }
+  end
+
+  # GET /api/v1/cases/:id/similar
+  def similar
+    authorize @case, :show?
+    limit = (params[:limit] || 5).to_i.clamp(1, 20)
+    results = CaseSimilarityService.new(
+      rfe_case: @case,
+      tenant: current_user.tenant,
+      limit: limit
+    ).call
+
+    render json: { data: results }
   end
 
   private
