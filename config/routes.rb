@@ -90,6 +90,8 @@ Rails.application.routes.draw do
             patch :reorder
           end
         end
+
+        resources :comments, only: [:index, :create, :update, :destroy]
       end
 
       # Knowledge base

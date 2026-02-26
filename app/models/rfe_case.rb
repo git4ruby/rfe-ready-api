@@ -15,6 +15,7 @@ class RfeCase < ApplicationRecord
   has_many :evidence_checklists, foreign_key: :case_id, dependent: :destroy
   has_many :draft_responses, foreign_key: :case_id, dependent: :destroy
   has_many :exhibits, foreign_key: :case_id, dependent: :destroy
+  has_many :comments, foreign_key: :case_id, dependent: :destroy
 
   # Lockbox encryption for PII
   has_encrypted :beneficiary_name

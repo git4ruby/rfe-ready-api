@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :uploaded_documents, class_name: "RfeDocument", foreign_key: :uploaded_by_id, dependent: :nullify
   has_many :uploaded_knowledge_docs, class_name: "KnowledgeDoc", foreign_key: :uploaded_by_id, dependent: :nullify
   has_many :audit_logs, dependent: :nullify
+  has_many :comments, dependent: :nullify
 
   enum :role, { admin: 0, attorney: 1, paralegal: 2, viewer: 3 }
   enum :status, { active: 0, inactive: 1, invited: 2 }, prefix: :account

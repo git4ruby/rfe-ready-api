@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_19_000003) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -106,6 +106,22 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_19_000003) do
     t.index ["tenant_id", "case_number"], name: "index_cases_on_tenant_id_and_case_number", unique: true
     t.index ["tenant_id"], name: "index_cases_on_tenant_id"
     t.index ["uscis_receipt_number"], name: "index_cases_on_uscis_receipt_number"
+  end
+
+  create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_id", null: false
+    t.uuid "case_id", null: false
+    t.uuid "user_id", null: false
+    t.uuid "parent_id"
+    t.text "body", null: false
+    t.uuid "mentioned_user_ids", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["case_id", "created_at"], name: "index_comments_on_case_id_and_created_at"
+    t.index ["case_id"], name: "index_comments_on_case_id"
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["tenant_id"], name: "index_comments_on_tenant_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "draft_responses", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -320,6 +336,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_19_000003) do
   add_foreign_key "cases", "tenants"
   add_foreign_key "cases", "users", column: "assigned_attorney_id"
   add_foreign_key "cases", "users", column: "created_by_id"
+  add_foreign_key "comments", "cases"
+  add_foreign_key "comments", "comments", column: "parent_id"
+  add_foreign_key "comments", "tenants"
+  add_foreign_key "comments", "users"
   add_foreign_key "draft_responses", "cases"
   add_foreign_key "draft_responses", "rfe_sections"
   add_foreign_key "draft_responses", "tenants"
