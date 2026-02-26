@@ -283,6 +283,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
     t.string "encryption_key_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "two_factor_required", default: false, null: false
     t.index ["slug"], name: "index_tenants_on_slug", unique: true
   end
 
