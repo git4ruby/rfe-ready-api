@@ -150,7 +150,7 @@ Rails.application.routes.draw do
             patch :change_status
             patch :change_plan
           end
-          resources :users, only: [ :index, :create ]
+          resources :users, only: [ :index, :show, :create, :update, :destroy ]
         end
       end
     end

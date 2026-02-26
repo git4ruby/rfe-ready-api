@@ -153,6 +153,90 @@ RSpec.describe "Api::V1::Admin::Users", type: :request do
     end
   end
 
+  describe "GET /api/v1/admin/tenants/:tenant_id/users/:id" do
+    let!(:target_user) { create(:user, :attorney, tenant: target_tenant, first_name: "Jane", last_name: "Doe", bar_number: "123") }
+
+    it "returns user details" do
+      get "/api/v1/admin/tenants/#{target_tenant.id}/users/#{target_user.id}",
+          headers: authenticated_headers(super_admin)
+
+      expect(response).to have_http_status(:ok)
+      body = JSON.parse(response.body)
+      expect(body["data"]["email"]).to eq(target_user.email)
+      expect(body["data"]["first_name"]).to eq("Jane")
+    end
+
+    it "returns 404 for user in different tenant" do
+      other_tenant = create(:tenant, name: "Other Firm")
+      other_user = create(:user, :admin, tenant: other_tenant)
+
+      get "/api/v1/admin/tenants/#{target_tenant.id}/users/#{other_user.id}",
+          headers: authenticated_headers(super_admin)
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe "PATCH /api/v1/admin/tenants/:tenant_id/users/:id" do
+    let!(:target_user) { create(:user, :attorney, tenant: target_tenant, first_name: "Jane", last_name: "Doe", bar_number: "123") }
+
+    it "updates user attributes" do
+      patch "/api/v1/admin/tenants/#{target_tenant.id}/users/#{target_user.id}",
+            params: { user: { first_name: "Janet", role: "admin" } }.to_json,
+            headers: authenticated_headers(super_admin)
+
+      expect(response).to have_http_status(:ok)
+      body = JSON.parse(response.body)
+      expect(body["data"]["first_name"]).to eq("Janet")
+      expect(body["data"]["role"]).to eq("admin")
+      expect(body["meta"]["message"]).to include("updated")
+    end
+
+    it "can change user status to inactive" do
+      patch "/api/v1/admin/tenants/#{target_tenant.id}/users/#{target_user.id}",
+            params: { user: { status: "inactive" } }.to_json,
+            headers: authenticated_headers(super_admin)
+
+      expect(response).to have_http_status(:ok)
+      expect(target_user.reload.status).to eq("inactive")
+    end
+
+    it "returns 403 for non-super-admin" do
+      regular_tenant = create(:tenant)
+      regular_admin = create(:user, :admin, tenant: regular_tenant)
+
+      patch "/api/v1/admin/tenants/#{target_tenant.id}/users/#{target_user.id}",
+            params: { user: { first_name: "Hacker" } }.to_json,
+            headers: authenticated_headers(regular_admin)
+
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+
+  describe "DELETE /api/v1/admin/tenants/:tenant_id/users/:id" do
+    let!(:target_user) { create(:user, :viewer, tenant: target_tenant) }
+
+    it "deactivates the user (sets status to inactive)" do
+      delete "/api/v1/admin/tenants/#{target_tenant.id}/users/#{target_user.id}",
+             headers: authenticated_headers(super_admin)
+
+      expect(response).to have_http_status(:ok)
+      body = JSON.parse(response.body)
+      expect(body["meta"]["message"]).to include("deactivated")
+      expect(target_user.reload.status).to eq("inactive")
+    end
+
+    it "returns 403 for non-super-admin" do
+      regular_tenant = create(:tenant)
+      regular_admin = create(:user, :admin, tenant: regular_tenant)
+
+      delete "/api/v1/admin/tenants/#{target_tenant.id}/users/#{target_user.id}",
+             headers: authenticated_headers(regular_admin)
+
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+
   describe "authorization" do
     let(:regular_tenant) { create(:tenant) }
     let(:regular_admin) { create(:user, :admin, tenant: regular_tenant) }
