@@ -105,6 +105,13 @@ Rails.application.routes.draw do
       # Knowledge semantic search
       get "knowledge/search", to: "knowledge_search#search"
 
+      # Reports
+      resources :reports, only: [] do
+        collection do
+          get :dashboard
+        end
+      end
+
       # SSO / OAuth callbacks
       get "auth/:provider/callback", to: "omniauth#callback"
       post "auth/:provider/callback", to: "omniauth#callback"
