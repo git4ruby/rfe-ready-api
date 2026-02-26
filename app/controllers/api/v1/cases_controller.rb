@@ -89,7 +89,9 @@ class Api::V1::CasesController < Api::V1::BaseController
   def mark_reviewed
     authorize @case, :mark_reviewed?
 
+    old_status = @case.status
     @case.complete_analysis!
+    notify_case_status_change(@case, old_status, @case.status)
     render json: { data: CaseSerializer.render_as_hash(@case) }
   end
 
@@ -97,7 +99,9 @@ class Api::V1::CasesController < Api::V1::BaseController
   def mark_responded
     authorize @case, :mark_responded?
 
+    old_status = @case.status
     @case.mark_responded!
+    notify_case_status_change(@case, old_status, @case.status)
     render json: { data: CaseSerializer.render_as_hash(@case) }
   end
 
@@ -105,7 +109,9 @@ class Api::V1::CasesController < Api::V1::BaseController
   def archive
     authorize @case, :archive?
 
+    old_status = @case.status
     @case.archive!
+    notify_case_status_change(@case, old_status, @case.status)
     render json: { data: CaseSerializer.render_as_hash(@case) }
   end
 
@@ -176,6 +182,18 @@ class Api::V1::CasesController < Api::V1::BaseController
 
   def set_case
     @case = RfeCase.find(params[:id])
+  end
+
+  def notify_case_status_change(rfe_case, old_status, new_status)
+    users_to_notify = [ rfe_case.created_by, rfe_case.assigned_attorney ].compact.uniq
+    users_to_notify.reject { |u| u.id == current_user.id }.each do |user|
+      SendNotificationEmailJob.perform_later(
+        "case_status_change",
+        user.id,
+        rfe_case.tenant_id,
+        { "case_id" => rfe_case.id, "old_status" => old_status, "new_status" => new_status }
+      )
+    end
   end
 
   def case_params

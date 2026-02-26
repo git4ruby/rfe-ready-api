@@ -1,0 +1,11 @@
+Hi <%= @user.first_name %>,
+
+The status of Case <%= @case_number %> has been updated.
+
+Previous Status: <%= @old_status.humanize %>
+New Status: <%= @new_status.humanize %>
+
+View the case: <%= @case_url %>
+
+--
+RFE Ready

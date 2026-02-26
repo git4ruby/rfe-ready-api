@@ -75,6 +75,13 @@ class Api::V1::CommentsController < Api::V1::BaseController
         body: "#{current_user.full_name} mentioned you in a comment on case #{@case.case_number}",
         data: { case_id: @case.id, comment_id: comment.id }
       )
+
+      SendNotificationEmailJob.perform_later(
+        "comment_mention",
+        mentioned_user.id,
+        comment.tenant_id,
+        { "comment_id" => comment.id }
+      )
     end
   end
 end
