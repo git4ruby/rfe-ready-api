@@ -328,6 +328,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "webhooks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_id", null: false
+    t.string "url", null: false
+    t.string "events", default: [], array: true
+    t.string "secret"
+    t.boolean "active", default: true, null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_webhooks_on_tenant_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "audit_logs", "tenants"
@@ -362,4 +374,5 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
   add_foreign_key "rfe_sections", "rfe_documents"
   add_foreign_key "rfe_sections", "tenants"
   add_foreign_key "users", "tenants"
+  add_foreign_key "webhooks", "tenants"
 end

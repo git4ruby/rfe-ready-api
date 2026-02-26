@@ -115,6 +115,13 @@ Rails.application.routes.draw do
       # CSV Import
       resources :imports, only: [:create]
 
+      # Webhooks
+      resources :webhooks do
+        member do
+          post :test_delivery
+        end
+      end
+
       # SSO / OAuth callbacks
       get "auth/:provider/callback", to: "omniauth#callback"
       post "auth/:provider/callback", to: "omniauth#callback"
