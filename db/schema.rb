@@ -77,6 +77,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
     t.index ["user_id"], name: "index_backups_on_user_id"
   end
 
+  create_table "case_templates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.string "visa_category", default: "H-1B", null: false
+    t.jsonb "default_sections", default: []
+    t.jsonb "default_checklist", default: []
+    t.jsonb "default_notes", default: ""
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "name"], name: "index_case_templates_on_tenant_id_and_name", unique: true
+    t.index ["tenant_id"], name: "index_case_templates_on_tenant_id"
+  end
+
   create_table "cases", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "tenant_id", null: false
     t.uuid "created_by_id", null: false
@@ -139,7 +153,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
     t.text "attorney_feedback"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "locked_by_id"
+    t.datetime "locked_at"
     t.index ["case_id"], name: "index_draft_responses_on_case_id"
+    t.index ["locked_by_id"], name: "index_draft_responses_on_locked_by_id"
     t.index ["rfe_section_id", "position"], name: "index_draft_responses_on_rfe_section_id_and_position"
     t.index ["rfe_section_id"], name: "index_draft_responses_on_rfe_section_id"
     t.index ["status"], name: "index_draft_responses_on_status"
@@ -357,6 +374,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
   add_foreign_key "audit_logs", "users"
   add_foreign_key "backups", "tenants"
   add_foreign_key "backups", "users"
+  add_foreign_key "case_templates", "tenants"
   add_foreign_key "cases", "tenants"
   add_foreign_key "cases", "users", column: "assigned_attorney_id"
   add_foreign_key "cases", "users", column: "created_by_id"
@@ -367,6 +385,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
   add_foreign_key "draft_responses", "cases"
   add_foreign_key "draft_responses", "rfe_sections"
   add_foreign_key "draft_responses", "tenants"
+  add_foreign_key "draft_responses", "users", column: "locked_by_id"
   add_foreign_key "embeddings", "tenants"
   add_foreign_key "evidence_checklists", "cases"
   add_foreign_key "evidence_checklists", "rfe_documents", column: "linked_document_id"

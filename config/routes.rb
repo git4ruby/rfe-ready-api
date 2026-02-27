@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   put  "api/v1/users/password", to: "api/v1/passwords#update"
   patch "api/v1/users/password", to: "api/v1/passwords#update"
 
+  # API Documentation
+  get "api-docs", to: "api_docs#index"
+
   namespace :api do
     namespace :v1 do
       # Dashboard
@@ -83,6 +86,8 @@ Rails.application.routes.draw do
           member do
             patch :approve
             post :regenerate
+            post :lock
+            post :unlock
           end
         end
 
@@ -128,6 +133,9 @@ Rails.application.routes.draw do
           post :test_notification
         end
       end
+
+      # Case templates
+      resources :case_templates
 
       # SSO / OAuth callbacks
       get "auth/:provider/callback", to: "omniauth#callback"
