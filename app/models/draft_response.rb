@@ -6,6 +6,7 @@ class DraftResponse < ApplicationRecord
   belongs_to :tenant
   belongs_to :case, class_name: "RfeCase"
   belongs_to :rfe_section
+  belongs_to :locked_by, class_name: "User", optional: true
 
   enum :status, { draft: 0, editing: 1, reviewed: 2, approved: 3 }, prefix: :response
 

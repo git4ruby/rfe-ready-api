@@ -1,6 +1,6 @@
 class Api::V1::DraftResponsesController < Api::V1::BaseController
   before_action :set_case
-  before_action :set_draft_response, only: %i[show update approve regenerate]
+  before_action :set_draft_response, only: %i[show update approve regenerate lock unlock]
 
   # GET /api/v1/cases/:case_id/draft_responses
   def index
@@ -56,6 +56,36 @@ class Api::V1::DraftResponsesController < Api::V1::BaseController
     render json: {
       data: { status: "queued", message: "Regeneration started." }
     }, status: :accepted
+  end
+
+  # POST /api/v1/cases/:case_id/draft_responses/:id/lock
+  def lock
+    authorize @draft_response, :update?
+
+    if @draft_response.locked_by_id.present? && @draft_response.locked_by_id != current_user.id
+      # Check if lock is stale (older than 5 minutes)
+      if @draft_response.locked_at && @draft_response.locked_at > 5.minutes.ago
+        render json: {
+          error: "Draft is currently being edited by another user.",
+          locked_by: UserSerializer.render_as_hash(@draft_response.locked_by)
+        }, status: :conflict
+        return
+      end
+    end
+
+    @draft_response.update!(locked_by: current_user, locked_at: Time.current)
+    render json: { data: DraftResponseSerializer.render_as_hash(@draft_response) }
+  end
+
+  # POST /api/v1/cases/:case_id/draft_responses/:id/unlock
+  def unlock
+    authorize @draft_response, :update?
+
+    if @draft_response.locked_by_id == current_user.id || current_user.admin?
+      @draft_response.update!(locked_by: nil, locked_at: nil)
+    end
+
+    render json: { data: DraftResponseSerializer.render_as_hash(@draft_response) }
   end
 
   private
