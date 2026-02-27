@@ -273,6 +273,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
     t.index ["tenant_id"], name: "index_rfe_sections_on_tenant_id"
   end
 
+  create_table "slack_integrations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tenant_id", null: false
+    t.string "webhook_url", null: false
+    t.string "channel_name"
+    t.string "events", default: [], array: true
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_slack_integrations_on_tenant_id"
+  end
+
   create_table "tenants", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
@@ -373,6 +384,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_25_000001) do
   add_foreign_key "rfe_sections", "cases"
   add_foreign_key "rfe_sections", "rfe_documents"
   add_foreign_key "rfe_sections", "tenants"
+  add_foreign_key "slack_integrations", "tenants"
   add_foreign_key "users", "tenants"
   add_foreign_key "webhooks", "tenants"
 end

@@ -122,6 +122,13 @@ Rails.application.routes.draw do
         end
       end
 
+      # Slack integrations
+      resources :slack_integrations do
+        member do
+          post :test_notification
+        end
+      end
+
       # SSO / OAuth callbacks
       get "auth/:provider/callback", to: "omniauth#callback"
       post "auth/:provider/callback", to: "omniauth#callback"
