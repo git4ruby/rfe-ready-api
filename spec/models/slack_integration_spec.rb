@@ -34,7 +34,7 @@ RSpec.describe SlackIntegration, type: :model do
     end
 
     it "validates events are supported" do
-      integration = build(:slack_integration, tenant: tenant, events: ["invalid.event"])
+      integration = build(:slack_integration, tenant: tenant, events: [ "invalid.event" ])
       expect(integration).not_to be_valid
       expect(integration.errors[:events].first).to include("invalid.event")
     end

@@ -47,7 +47,7 @@ RSpec.describe Comment, type: :model do
     let(:mentioned_user) { create(:user, :attorney, tenant: tenant) }
 
     it "returns users matching mentioned_user_ids" do
-      comment = create(:comment, case: rfe_case, tenant: tenant, user: user, mentioned_user_ids: [mentioned_user.id])
+      comment = create(:comment, case: rfe_case, tenant: tenant, user: user, mentioned_user_ids: [ mentioned_user.id ])
       expect(comment.mentioned_users).to include(mentioned_user)
     end
 

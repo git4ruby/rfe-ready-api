@@ -13,7 +13,7 @@ class CreateComments < ActiveRecord::Migration[8.0]
     end
 
     add_index :comments, :parent_id
-    add_index :comments, [:case_id, :created_at]
+    add_index :comments, [ :case_id, :created_at ]
     add_foreign_key :comments, :comments, column: :parent_id
   end
 end

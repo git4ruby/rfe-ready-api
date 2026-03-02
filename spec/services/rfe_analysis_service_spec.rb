@@ -132,7 +132,7 @@ RSpec.describe RfeAnalysisService do
     context "when OpenAI returns invalid JSON" do
       before do
         allow(openai_client).to receive(:chat).and_return(
-          { "choices" => [{ "message" => { "content" => "not valid json {{{" } }] }
+          { "choices" => [ { "message" => { "content" => "not valid json {{{" } } ] }
         )
       end
 
@@ -169,7 +169,7 @@ RSpec.describe RfeAnalysisService do
 
     context "when OpenAI returns empty sections array" do
       before do
-        response = { "choices" => [{ "message" => { "content" => { "sections" => [] }.to_json } }] }
+        response = { "choices" => [ { "message" => { "content" => { "sections" => [] }.to_json } } ] }
         allow(openai_client).to receive(:chat).and_return(response)
       end
 
@@ -203,7 +203,7 @@ RSpec.describe RfeAnalysisService do
             }
           ]
         }
-        response = { "choices" => [{ "message" => { "content" => analysis.to_json } }] }
+        response = { "choices" => [ { "message" => { "content" => analysis.to_json } } ] }
         allow(openai_client).to receive(:chat).and_return(response)
       end
 
@@ -236,7 +236,7 @@ RSpec.describe RfeAnalysisService do
             }
           ]
         }
-        response = { "choices" => [{ "message" => { "content" => analysis.to_json } }] }
+        response = { "choices" => [ { "message" => { "content" => analysis.to_json } } ] }
         allow(openai_client).to receive(:chat).and_return(response)
       end
 
@@ -262,7 +262,7 @@ RSpec.describe RfeAnalysisService do
             }
           ]
         }
-        response = { "choices" => [{ "message" => { "content" => analysis.to_json } }] }
+        response = { "choices" => [ { "message" => { "content" => analysis.to_json } } ] }
         allow(openai_client).to receive(:chat).and_return(response)
       end
 
@@ -288,7 +288,7 @@ RSpec.describe RfeAnalysisService do
             }
           ]
         }
-        response = { "choices" => [{ "message" => { "content" => analysis.to_json } }] }
+        response = { "choices" => [ { "message" => { "content" => analysis.to_json } } ] }
         allow(openai_client).to receive(:chat).and_return(response)
       end
 

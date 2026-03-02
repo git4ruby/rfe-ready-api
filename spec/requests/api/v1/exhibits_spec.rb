@@ -269,7 +269,7 @@ RSpec.describe "Api::V1::Exhibits", type: :request do
     context "when authenticated as admin" do
       it "reorders exhibits by updating positions" do
         patch "#{base_url}/reorder",
-          params: { ids: [exhibit_c.id, exhibit_a.id, exhibit_b.id] }.to_json,
+          params: { ids: [ exhibit_c.id, exhibit_a.id, exhibit_b.id ] }.to_json,
           headers: authenticated_headers(admin)
 
         expect(response).to have_http_status(:ok)
@@ -282,7 +282,7 @@ RSpec.describe "Api::V1::Exhibits", type: :request do
     context "when authenticated as viewer" do
       it "returns 403 (update? requires can_edit?)" do
         patch "#{base_url}/reorder",
-          params: { ids: [exhibit_c.id, exhibit_a.id, exhibit_b.id] }.to_json,
+          params: { ids: [ exhibit_c.id, exhibit_a.id, exhibit_b.id ] }.to_json,
           headers: authenticated_headers(viewer)
 
         expect(response).to have_http_status(:forbidden)
@@ -292,7 +292,7 @@ RSpec.describe "Api::V1::Exhibits", type: :request do
     context "when unauthenticated" do
       it "returns 401" do
         patch "#{base_url}/reorder",
-          params: { ids: [exhibit_c.id, exhibit_a.id, exhibit_b.id] }.to_json
+          params: { ids: [ exhibit_c.id, exhibit_a.id, exhibit_b.id ] }.to_json
 
         expect(response).to have_http_status(:unauthorized)
       end

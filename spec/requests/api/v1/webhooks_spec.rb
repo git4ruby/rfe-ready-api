@@ -68,7 +68,7 @@ RSpec.describe "Api::V1::Webhooks", type: :request do
       {
         webhook: {
           url: "https://myapp.com/webhook",
-          events: ["case.created", "document.uploaded"],
+          events: [ "case.created", "document.uploaded" ],
           secret: "my_secret",
           description: "My webhook"
         }
@@ -83,7 +83,7 @@ RSpec.describe "Api::V1::Webhooks", type: :request do
       expect(response).to have_http_status(:created)
       body = JSON.parse(response.body)
       expect(body["data"]["url"]).to eq("https://myapp.com/webhook")
-      expect(body["data"]["events"]).to eq(["case.created", "document.uploaded"])
+      expect(body["data"]["events"]).to eq([ "case.created", "document.uploaded" ])
     end
 
     it "does not expose secret in create response" do
@@ -160,7 +160,7 @@ RSpec.describe "Api::V1::Webhooks", type: :request do
   end
 
   describe "POST /api/v1/webhooks/:id/test_delivery" do
-    let!(:webhook) { create(:webhook, tenant: tenant, events: ["case.created"]) }
+    let!(:webhook) { create(:webhook, tenant: tenant, events: [ "case.created" ]) }
 
     it "queues a test webhook delivery" do
       post "/api/v1/webhooks/#{webhook.id}/test_delivery", headers: headers

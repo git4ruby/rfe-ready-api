@@ -40,24 +40,24 @@ RSpec.describe Webhook, type: :model do
     end
 
     it "validates events are supported" do
-      webhook = build(:webhook, tenant: tenant, events: ["case.created"])
+      webhook = build(:webhook, tenant: tenant, events: [ "case.created" ])
       expect(webhook).to be_valid
     end
 
     it "rejects invalid events" do
-      webhook = build(:webhook, tenant: tenant, events: ["invalid.event"])
+      webhook = build(:webhook, tenant: tenant, events: [ "invalid.event" ])
       expect(webhook).not_to be_valid
       expect(webhook.errors[:events].first).to include("contains unsupported events: invalid.event")
     end
 
     it "rejects a mix of valid and invalid events" do
-      webhook = build(:webhook, tenant: tenant, events: ["case.created", "bogus.event"])
+      webhook = build(:webhook, tenant: tenant, events: [ "case.created", "bogus.event" ])
       expect(webhook).not_to be_valid
       expect(webhook.errors[:events].first).to include("bogus.event")
     end
 
     it "allows multiple valid events" do
-      webhook = build(:webhook, tenant: tenant, events: ["case.created", "case.updated", "document.uploaded"])
+      webhook = build(:webhook, tenant: tenant, events: [ "case.created", "case.updated", "document.uploaded" ])
       expect(webhook).to be_valid
     end
 

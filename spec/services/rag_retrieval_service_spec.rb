@@ -252,7 +252,7 @@ RSpec.describe RagRetrievalService do
     context "when OpenAI returns nil embedding" do
       before do
         allow(openai_client).to receive(:embeddings).and_return(
-          { "data" => [{ "embedding" => nil }] }
+          { "data" => [ { "embedding" => nil } ] }
         )
       end
 

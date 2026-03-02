@@ -10,7 +10,7 @@ RSpec.describe SlackNotificationService, type: :service do
 
   describe "#call" do
     it "queues SendSlackNotificationJob for matching active integrations" do
-      integration = create(:slack_integration, tenant: tenant, events: ["case.created"], active: true)
+      integration = create(:slack_integration, tenant: tenant, events: [ "case.created" ], active: true)
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: { case_number: "RFE-001" }).call
@@ -18,7 +18,7 @@ RSpec.describe SlackNotificationService, type: :service do
     end
 
     it "does not queue for inactive integrations" do
-      create(:slack_integration, :inactive, tenant: tenant, events: ["case.created"])
+      create(:slack_integration, :inactive, tenant: tenant, events: [ "case.created" ])
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: {}).call
@@ -26,7 +26,7 @@ RSpec.describe SlackNotificationService, type: :service do
     end
 
     it "does not queue for non-matching events" do
-      create(:slack_integration, tenant: tenant, events: ["document.uploaded"], active: true)
+      create(:slack_integration, tenant: tenant, events: [ "document.uploaded" ], active: true)
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: {}).call
@@ -34,8 +34,8 @@ RSpec.describe SlackNotificationService, type: :service do
     end
 
     it "queues for multiple matching integrations" do
-      create(:slack_integration, tenant: tenant, events: ["case.created"], active: true, webhook_url: "https://hooks.slack.com/services/T00/B00/aaa")
-      create(:slack_integration, tenant: tenant, events: ["case.created"], active: true, webhook_url: "https://hooks.slack.com/services/T00/B00/bbb")
+      create(:slack_integration, tenant: tenant, events: [ "case.created" ], active: true, webhook_url: "https://hooks.slack.com/services/T00/B00/aaa")
+      create(:slack_integration, tenant: tenant, events: [ "case.created" ], active: true, webhook_url: "https://hooks.slack.com/services/T00/B00/bbb")
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: {}).call

@@ -103,7 +103,7 @@ RSpec.describe "Api::V1::Comments", type: :request do
     context "when mentioning users" do
       it "stores mentioned_user_ids" do
         post base_url,
-          params: { comment: { body: "Hey @attorney check this", mentioned_user_ids: [attorney.id] } }.to_json,
+          params: { comment: { body: "Hey @attorney check this", mentioned_user_ids: [ attorney.id ] } }.to_json,
           headers: authenticated_headers(admin)
 
         expect(response).to have_http_status(:created)

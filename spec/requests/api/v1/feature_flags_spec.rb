@@ -145,7 +145,7 @@ RSpec.describe "Api::V1::FeatureFlags", type: :request do
 
   describe "POST /api/v1/feature_flags" do
     let(:valid_params) do
-      { feature_flag: { name: "new_feature", enabled: true, allowed_roles: ["admin"], allowed_plans: [] } }
+      { feature_flag: { name: "new_feature", enabled: true, allowed_roles: [ "admin" ], allowed_plans: [] } }
     end
 
     it "creates a feature flag as admin" do
@@ -157,7 +157,7 @@ RSpec.describe "Api::V1::FeatureFlags", type: :request do
       body = JSON.parse(response.body)
       expect(body["data"]["name"]).to eq("new_feature")
       expect(body["data"]["enabled"]).to be true
-      expect(body["data"]["allowed_roles"]).to eq(["admin"])
+      expect(body["data"]["allowed_roles"]).to eq([ "admin" ])
     end
 
     it "returns 403 for non-admin" do
@@ -178,13 +178,13 @@ RSpec.describe "Api::V1::FeatureFlags", type: :request do
 
     it "updates a feature flag as admin" do
       patch "/api/v1/feature_flags/#{flag.id}",
-        params: { feature_flag: { enabled: true, allowed_roles: ["admin", "attorney"] } },
+        params: { feature_flag: { enabled: true, allowed_roles: [ "admin", "attorney" ] } },
         headers: authenticated_headers(admin_user), as: :json
 
       expect(response).to have_http_status(:ok)
       body = JSON.parse(response.body)
       expect(body["data"]["enabled"]).to be true
-      expect(body["data"]["allowed_roles"]).to eq(["admin", "attorney"])
+      expect(body["data"]["allowed_roles"]).to eq([ "admin", "attorney" ])
     end
 
     it "returns 403 for non-admin" do

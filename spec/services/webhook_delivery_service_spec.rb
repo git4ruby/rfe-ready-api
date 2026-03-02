@@ -10,7 +10,7 @@ RSpec.describe WebhookDeliveryService, type: :service do
 
   describe "#call" do
     it "queues DeliverWebhookJob for matching active webhooks" do
-      webhook = create(:webhook, tenant: tenant, events: ["case.created"], active: true)
+      webhook = create(:webhook, tenant: tenant, events: [ "case.created" ], active: true)
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: { id: "abc" }).call
@@ -18,7 +18,7 @@ RSpec.describe WebhookDeliveryService, type: :service do
     end
 
     it "does not queue for inactive webhooks" do
-      create(:webhook, :inactive, tenant: tenant, events: ["case.created"])
+      create(:webhook, :inactive, tenant: tenant, events: [ "case.created" ])
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: { id: "abc" }).call
@@ -26,7 +26,7 @@ RSpec.describe WebhookDeliveryService, type: :service do
     end
 
     it "does not queue for webhooks without matching event" do
-      create(:webhook, tenant: tenant, events: ["document.uploaded"], active: true)
+      create(:webhook, tenant: tenant, events: [ "document.uploaded" ], active: true)
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: { id: "abc" }).call
@@ -34,8 +34,8 @@ RSpec.describe WebhookDeliveryService, type: :service do
     end
 
     it "queues for multiple matching webhooks" do
-      webhook1 = create(:webhook, tenant: tenant, events: ["case.created"], active: true, url: "https://example.com/hook1")
-      webhook2 = create(:webhook, tenant: tenant, events: ["case.created", "case.updated"], active: true, url: "https://example.com/hook2")
+      webhook1 = create(:webhook, tenant: tenant, events: [ "case.created" ], active: true, url: "https://example.com/hook1")
+      webhook2 = create(:webhook, tenant: tenant, events: [ "case.created", "case.updated" ], active: true, url: "https://example.com/hook2")
 
       expect {
         described_class.new(tenant: tenant, event: "case.created", payload: { id: "abc" }).call
@@ -45,7 +45,7 @@ RSpec.describe WebhookDeliveryService, type: :service do
     it "does not queue for webhooks belonging to a different tenant" do
       other_tenant = create(:tenant)
       ActsAsTenant.with_tenant(other_tenant) do
-        create(:webhook, tenant: other_tenant, events: ["case.created"], active: true)
+        create(:webhook, tenant: other_tenant, events: [ "case.created" ], active: true)
       end
 
       expect {

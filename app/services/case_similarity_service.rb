@@ -27,7 +27,7 @@ class CaseSimilarityService
                    .first(limit * 3) # fetch more to deduplicate by case
 
     # Group by case and pick the best match per case
-    cases_seen = Set.new([rfe_case.id])
+    cases_seen = Set.new([ rfe_case.id ])
     similar_cases = []
 
     results.each do |embedding|

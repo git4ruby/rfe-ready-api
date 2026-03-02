@@ -21,7 +21,7 @@ RSpec.describe "Api::V1::CaseTemplates", type: :request do
         body = JSON.parse(response.body)
         expect(body["data"].length).to eq(2)
         names = body["data"].map { |t| t["name"] }
-        expect(names).to eq(["Alpha Template", "Beta Template"])
+        expect(names).to eq([ "Alpha Template", "Beta Template" ])
       end
     end
 
@@ -139,7 +139,7 @@ RSpec.describe "Api::V1::CaseTemplates", type: :request do
     context "with invalid params (missing name)" do
       it "returns 422" do
         post "/api/v1/case_templates",
-          params: { case_template: { name: "", visa_category: "H-1B", default_sections: [{ title: "X", description: "Y" }], default_checklist: [{ item: "Z", required: true }] } },
+          params: { case_template: { name: "", visa_category: "H-1B", default_sections: [ { title: "X", description: "Y" } ], default_checklist: [ { item: "Z", required: true } ] } },
           headers: headers,
           as: :json
 

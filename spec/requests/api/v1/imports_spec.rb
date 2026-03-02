@@ -9,7 +9,7 @@ RSpec.describe "Api::V1::Imports", type: :request do
   let(:valid_csv_content) { "case_number,visa_type,petitioner_name\nRFE-001,H-1B,Acme Corp\nRFE-002,L-1A,Globex Inc\n" }
 
   def csv_upload(content, content_type: "text/csv", filename: "import.csv")
-    file = Tempfile.new(["import", ".csv"])
+    file = Tempfile.new([ "import", ".csv" ])
     file.write(content)
     file.rewind
     Rack::Test::UploadedFile.new(file.path, content_type)

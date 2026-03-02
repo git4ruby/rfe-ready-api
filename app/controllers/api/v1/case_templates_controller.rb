@@ -38,6 +38,6 @@ class Api::V1::CaseTemplatesController < Api::V1::BaseController
   end
 
   def template_params
-    params.require(:case_template).permit(:name, :description, :visa_category, :default_notes, default_sections: [:title, :description], default_checklist: [:item, :required])
+    params.require(:case_template).permit(:name, :description, :visa_category, :default_notes, default_sections: [ :title, :description ], default_checklist: [ :item, :required ])
   end
 end

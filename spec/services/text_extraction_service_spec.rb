@@ -65,7 +65,7 @@ RSpec.describe TextExtractionService, type: :service do
 
       let(:page1) { instance_double("PDF::Reader::Page", text: "Page 1 content about specialty occupation.") }
       let(:page2) { instance_double("PDF::Reader::Page", text: "Page 2 content about beneficiary qualifications.") }
-      let(:pdf_reader) { instance_double(PDF::Reader, pages: [page1, page2]) }
+      let(:pdf_reader) { instance_double(PDF::Reader, pages: [ page1, page2 ]) }
 
       before do
         # Attach a dummy PDF file (binary content does not matter since we mock PDF::Reader)

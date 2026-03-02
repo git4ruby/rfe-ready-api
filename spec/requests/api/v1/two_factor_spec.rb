@@ -150,7 +150,7 @@ RSpec.describe "Api::V1::TwoFactor", type: :request do
         user.update!(
           otp_secret: secret,
           otp_required_for_login: true,
-          otp_backup_codes: ["ABCD1234"]
+          otp_backup_codes: [ "ABCD1234" ]
         )
 
         totp = ROTP::TOTP.new(secret, issuer: "RFE Ready")

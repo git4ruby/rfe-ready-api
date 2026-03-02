@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :webhook do
     tenant
     url { "https://example.com/webhooks/receive" }
-    events { ["case.created"] }
+    events { [ "case.created" ] }
     secret { "test_secret_key" }
     active { true }
     description { "Test webhook" }
@@ -16,7 +16,7 @@ FactoryBot.define do
     end
 
     trait :multiple_events do
-      events { ["case.created", "case.updated", "document.uploaded"] }
+      events { [ "case.created", "case.updated", "document.uploaded" ] }
     end
   end
 end

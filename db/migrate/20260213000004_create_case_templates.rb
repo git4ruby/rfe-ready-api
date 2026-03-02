@@ -10,6 +10,6 @@ class CreateCaseTemplates < ActiveRecord::Migration[8.0]
       t.jsonb :default_notes, default: ""
       t.timestamps
     end
-    add_index :case_templates, [:tenant_id, :name], unique: true
+    add_index :case_templates, [ :tenant_id, :name ], unique: true
   end
 end

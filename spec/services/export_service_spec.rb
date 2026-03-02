@@ -55,7 +55,7 @@ RSpec.describe ExportService, type: :service do
         result = service.call
 
         # DOCX files are ZIP archives; they start with the PK magic bytes
-        expect(result.bytes[0..1]).to eq([0x50, 0x4B])
+        expect(result.bytes[0..1]).to eq([ 0x50, 0x4B ])
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe ExportService, type: :service do
       it "returns valid ZIP content starting with PK header" do
         result = service.call
 
-        expect(result.bytes[0..1]).to eq([0x50, 0x4B])
+        expect(result.bytes[0..1]).to eq([ 0x50, 0x4B ])
       end
     end
 

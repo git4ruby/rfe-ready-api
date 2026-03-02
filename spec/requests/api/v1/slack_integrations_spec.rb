@@ -36,7 +36,7 @@ RSpec.describe "Api::V1::SlackIntegrations", type: :request do
         slack_integration: {
           webhook_url: "https://hooks.slack.com/services/T00/B00/new",
           channel_name: "#alerts",
-          events: ["case.created", "case.status_changed"],
+          events: [ "case.created", "case.status_changed" ],
           active: true
         }
       }
@@ -48,7 +48,7 @@ RSpec.describe "Api::V1::SlackIntegrations", type: :request do
       expect(response).to have_http_status(:created)
       body = JSON.parse(response.body)
       expect(body["data"]["webhook_url"]).to eq("https://hooks.slack.com/services/T00/B00/new")
-      expect(body["data"]["events"]).to eq(["case.created", "case.status_changed"])
+      expect(body["data"]["events"]).to eq([ "case.created", "case.status_changed" ])
     end
 
     it "returns 403 for non-admin" do

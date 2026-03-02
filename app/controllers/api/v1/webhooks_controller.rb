@@ -6,23 +6,23 @@ class Api::V1::WebhooksController < Api::V1::BaseController
 
   def index
     webhooks = Webhook.where(tenant: current_user.tenant).order(created_at: :desc)
-    render json: { data: webhooks.as_json(except: [:secret]) }
+    render json: { data: webhooks.as_json(except: [ :secret ]) }
   end
 
   def show
-    render json: { data: @webhook.as_json(except: [:secret]) }
+    render json: { data: @webhook.as_json(except: [ :secret ]) }
   end
 
   def create
     webhook = Webhook.new(webhook_params)
     webhook.tenant = current_user.tenant
     webhook.save!
-    render json: { data: webhook.as_json(except: [:secret]) }, status: :created
+    render json: { data: webhook.as_json(except: [ :secret ]) }, status: :created
   end
 
   def update
     @webhook.update!(webhook_params)
-    render json: { data: @webhook.as_json(except: [:secret]) }
+    render json: { data: @webhook.as_json(except: [ :secret ]) }
   end
 
   def destroy

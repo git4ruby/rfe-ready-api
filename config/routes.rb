@@ -97,7 +97,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :comments, only: [:index, :create, :update, :destroy]
+        resources :comments, only: [ :index, :create, :update, :destroy ]
       end
 
       # Knowledge base
@@ -118,7 +118,7 @@ Rails.application.routes.draw do
       end
 
       # CSV Import
-      resources :imports, only: [:create]
+      resources :imports, only: [ :create ]
 
       # Webhooks
       resources :webhooks do

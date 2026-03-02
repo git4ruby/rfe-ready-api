@@ -14,7 +14,7 @@ RSpec.describe NotificationMailer, type: :mailer do
     it "sends email to mentioned user" do
       mail = described_class.comment_mention(user, comment, rfe_case)
 
-      expect(mail.to).to eq([user.email])
+      expect(mail.to).to eq([ user.email ])
       expect(mail.subject).to include("mentioned")
       expect(mail.subject).to include("RFE-2026-001")
     end
@@ -39,7 +39,7 @@ RSpec.describe NotificationMailer, type: :mailer do
     it "sends email about status transition" do
       mail = described_class.case_status_change(user, rfe_case, "draft", "review")
 
-      expect(mail.to).to eq([user.email])
+      expect(mail.to).to eq([ user.email ])
       expect(mail.subject).to include("status changed")
       expect(mail.subject).to include("review")
     end
@@ -66,7 +66,7 @@ RSpec.describe NotificationMailer, type: :mailer do
     it "sends email about new document" do
       mail = described_class.document_uploaded(user, document, rfe_case)
 
-      expect(mail.to).to eq([user.email])
+      expect(mail.to).to eq([ user.email ])
       expect(mail.subject).to include("document uploaded")
       expect(mail.subject).to include("RFE-2026-001")
     end
@@ -84,7 +84,7 @@ RSpec.describe NotificationMailer, type: :mailer do
     it "sends email about draft readiness" do
       mail = described_class.draft_ready(user, rfe_case)
 
-      expect(mail.to).to eq([user.email])
+      expect(mail.to).to eq([ user.email ])
       expect(mail.subject).to include("Draft responses ready")
       expect(mail.subject).to include("RFE-2026-001")
     end

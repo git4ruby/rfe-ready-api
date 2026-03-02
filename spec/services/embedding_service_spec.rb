@@ -12,7 +12,7 @@ RSpec.describe EmbeddingService, type: :service do
   end
 
   def stub_embedding_response(vector = fake_vector)
-    { "data" => [{ "embedding" => vector }] }
+    { "data" => [ { "embedding" => vector } ] }
   end
 
   describe "#call" do
@@ -126,7 +126,7 @@ RSpec.describe EmbeddingService, type: :service do
           described_class.new(knowledge_doc).call
 
           indices = Embedding.order(:chunk_index).pluck(:chunk_index)
-          expect(indices).to eq([0, 1, 2, 3])
+          expect(indices).to eq([ 0, 1, 2, 3 ])
         end
 
         it "produces overlapping chunks" do
@@ -179,7 +179,7 @@ RSpec.describe EmbeddingService, type: :service do
       it "replaces old content with new content" do
         described_class.new(knowledge_doc).call
 
-        expect(Embedding.pluck(:content)).to eq(["Some content to embed."])
+        expect(Embedding.pluck(:content)).to eq([ "Some content to embed." ])
       end
     end
 
