@@ -65,7 +65,7 @@ gem "prawn-table", "~> 0.2"
 gem "caracal", "~> 1.4"
 
 # AI / LLM
-gem "ruby-openai", "~> 7.0"
+gem "ruby-openai", "~> 8.3"
 
 # Monitoring
 gem "lograge", "~> 0.14"
