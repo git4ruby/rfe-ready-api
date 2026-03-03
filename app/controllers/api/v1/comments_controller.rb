@@ -29,6 +29,7 @@ class Api::V1::CommentsController < Api::V1::BaseController
     authorize @comment
 
     @comment.update!(comment_params)
+    broadcast_comment_updated(@comment)
     render json: { data: CommentSerializer.render_as_hash(@comment) }
   end
 
@@ -37,6 +38,7 @@ class Api::V1::CommentsController < Api::V1::BaseController
     authorize @comment
 
     @comment.destroy!
+    broadcast_comment_deleted(@comment)
     head :no_content
   end
 
@@ -61,6 +63,26 @@ class Api::V1::CommentsController < Api::V1::BaseController
       case_id: @case.id,
       case_number: @case.case_number,
       message: "#{comment.user.full_name} commented on case #{@case.case_number}"
+    )
+  end
+
+  def broadcast_comment_updated(comment)
+    CaseUpdatesChannel.broadcast_update(
+      comment.tenant_id,
+      type: "comment_updated",
+      case_id: @case.id,
+      case_number: @case.case_number,
+      message: "Comment updated on case #{@case.case_number}"
+    )
+  end
+
+  def broadcast_comment_deleted(comment)
+    CaseUpdatesChannel.broadcast_update(
+      comment.tenant_id,
+      type: "comment_deleted",
+      case_id: @case.id,
+      case_number: @case.case_number,
+      message: "Comment deleted on case #{@case.case_number}"
     )
   end
 
