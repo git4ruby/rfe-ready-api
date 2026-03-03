@@ -33,7 +33,7 @@ gem "acts_as_tenant", "~> 1.0"
 # API
 gem "rack-cors"
 gem "blueprinter", "~> 1.0"
-gem "pagy", "~> 6.0"
+gem "pagy", "~> 43.3"
 
 # State Machine
 gem "aasm", "~> 5.5"
