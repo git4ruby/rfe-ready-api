@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   put  "api/v1/users/password", to: "api/v1/passwords#update"
   patch "api/v1/users/password", to: "api/v1/passwords#update"
 
+  # API Documentation
+  get "api-docs", to: "api_docs#index"
+
   namespace :api do
     namespace :v1 do
       # Dashboard
@@ -59,6 +62,7 @@ Rails.application.routes.draw do
           post :export
           get :export
           get :activity
+          get :similar
         end
 
         resources :rfe_documents, only: [ :index, :show, :create, :destroy ]
@@ -82,6 +86,8 @@ Rails.application.routes.draw do
           member do
             patch :approve
             post :regenerate
+            post :lock
+            post :unlock
           end
         end
 
@@ -90,6 +96,8 @@ Rails.application.routes.draw do
             patch :reorder
           end
         end
+
+        resources :comments, only: [ :index, :create, :update, :destroy ]
       end
 
       # Knowledge base
@@ -98,6 +106,36 @@ Rails.application.routes.draw do
           post :bulk_create
         end
       end
+
+      # Knowledge semantic search
+      get "knowledge/search", to: "knowledge_search#search"
+
+      # Reports
+      resources :reports, only: [] do
+        collection do
+          get :dashboard
+        end
+      end
+
+      # CSV Import
+      resources :imports, only: [ :create ]
+
+      # Webhooks
+      resources :webhooks do
+        member do
+          post :test_delivery
+        end
+      end
+
+      # Slack integrations
+      resources :slack_integrations do
+        member do
+          post :test_notification
+        end
+      end
+
+      # Case templates
+      resources :case_templates
 
       # SSO / OAuth callbacks
       get "auth/:provider/callback", to: "omniauth#callback"
@@ -116,7 +154,11 @@ Rails.application.routes.draw do
       get "search", to: "search#index"
 
       # Feature flags
-      resources :feature_flags, only: [ :index ]
+      resources :feature_flags, only: [ :index, :create, :update, :destroy ] do
+        collection do
+          get :manage
+        end
+      end
 
       # Backups (admin only)
       resources :backups, only: [ :index, :create, :destroy ] do
@@ -141,7 +183,7 @@ Rails.application.routes.draw do
             patch :change_status
             patch :change_plan
           end
-          resources :users, only: [ :index, :create ]
+          resources :users, only: [ :index, :show, :create, :update, :destroy ]
         end
       end
     end

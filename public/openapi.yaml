@@ -1,0 +1,582 @@
+openapi: "3.0.0"
+info:
+  title: RFE Ready API
+  version: "1.0.0"
+  description: API for managing RFE (Request for Evidence) cases in immigration law practice.
+  contact:
+    name: RFE Ready Support
+
+servers:
+  - url: /api/v1
+    description: API v1
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Case:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        case_number:
+          type: string
+        uscis_receipt_number:
+          type: string
+        visa_type:
+          type: string
+        status:
+          type: string
+          enum: [draft, analyzing, review, responded, archived]
+        petitioner_name:
+          type: string
+        beneficiary_name:
+          type: string
+        rfe_received_date:
+          type: string
+          format: date
+        rfe_deadline:
+          type: string
+          format: date
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+          enum: [admin, attorney, paralegal, viewer]
+
+    KnowledgeDoc:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        doc_type:
+          type: string
+        content:
+          type: string
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        body:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+          format: date-time
+
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+        events:
+          type: array
+          items:
+            type: string
+        active:
+          type: boolean
+        description:
+          type: string
+
+    SlackIntegration:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        webhook_url:
+          type: string
+        channel_name:
+          type: string
+        events:
+          type: array
+          items:
+            type: string
+        active:
+          type: boolean
+
+    CaseTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        visa_category:
+          type: string
+        default_sections:
+          type: array
+          items:
+            type: object
+        default_checklist:
+          type: array
+          items:
+            type: object
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+security:
+  - bearerAuth: []
+
+paths:
+  /users/sign_in:
+    post:
+      tags: [Authentication]
+      summary: Sign in
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+      responses:
+        '200':
+          description: Successful login
+        '401':
+          description: Invalid credentials
+
+  /dashboard:
+    get:
+      tags: [Dashboard]
+      summary: Get dashboard data
+      responses:
+        '200':
+          description: Dashboard statistics
+
+  /cases:
+    get:
+      tags: [Cases]
+      summary: List all cases
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: items
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of cases
+    post:
+      tags: [Cases]
+      summary: Create a new case
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rfe_case:
+                  type: object
+                  properties:
+                    case_number:
+                      type: string
+                    visa_type:
+                      type: string
+                    petitioner_name:
+                      type: string
+                    beneficiary_name:
+                      type: string
+                    rfe_received_date:
+                      type: string
+                      format: date
+                    rfe_deadline:
+                      type: string
+                      format: date
+                    notes:
+                      type: string
+      responses:
+        '201':
+          description: Case created
+        '422':
+          description: Validation error
+
+  /cases/{id}:
+    get:
+      tags: [Cases]
+      summary: Get case details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Case details
+        '404':
+          description: Case not found
+    patch:
+      tags: [Cases]
+      summary: Update a case
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rfe_case:
+                  type: object
+      responses:
+        '200':
+          description: Case updated
+    delete:
+      tags: [Cases]
+      summary: Delete a case
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Case deleted
+
+  /cases/{case_id}/comments:
+    get:
+      tags: [Comments]
+      summary: List comments for a case
+      parameters:
+        - name: case_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of comments
+    post:
+      tags: [Comments]
+      summary: Add a comment
+      parameters:
+        - name: case_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: object
+                  properties:
+                    body:
+                      type: string
+                    parent_id:
+                      type: string
+                      format: uuid
+      responses:
+        '201':
+          description: Comment created
+
+  /cases/{case_id}/draft_responses:
+    get:
+      tags: [Draft Responses]
+      summary: List draft responses for a case
+      parameters:
+        - name: case_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of draft responses
+
+  /cases/{case_id}/draft_responses/{id}/lock:
+    post:
+      tags: [Draft Responses]
+      summary: Lock a draft for editing
+      parameters:
+        - name: case_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Lock acquired
+        '409':
+          description: Draft already locked by another user
+
+  /cases/{case_id}/draft_responses/{id}/unlock:
+    post:
+      tags: [Draft Responses]
+      summary: Unlock a draft
+      parameters:
+        - name: case_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Lock released
+
+  /knowledge_docs:
+    get:
+      tags: [Knowledge Base]
+      summary: List knowledge documents
+      responses:
+        '200':
+          description: List of documents
+    post:
+      tags: [Knowledge Base]
+      summary: Create a knowledge document
+      responses:
+        '201':
+          description: Document created
+
+  /knowledge/search:
+    get:
+      tags: [Knowledge Base]
+      summary: Semantic search knowledge base
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+
+  /users:
+    get:
+      tags: [Users]
+      summary: List users
+      responses:
+        '200':
+          description: List of users
+    post:
+      tags: [Users]
+      summary: Create/invite a user
+      responses:
+        '201':
+          description: User created
+
+  /profile:
+    get:
+      tags: [Profile]
+      summary: Get current user profile
+      responses:
+        '200':
+          description: User profile
+    patch:
+      tags: [Profile]
+      summary: Update current user profile
+      responses:
+        '200':
+          description: Profile updated
+
+  /reports/dashboard:
+    get:
+      tags: [Reports]
+      summary: Get reporting dashboard data
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [7d, 30d, 90d, all]
+      responses:
+        '200':
+          description: Report data
+
+  /webhooks:
+    get:
+      tags: [Webhooks]
+      summary: List webhooks (admin only)
+      responses:
+        '200':
+          description: List of webhooks
+    post:
+      tags: [Webhooks]
+      summary: Create a webhook
+      responses:
+        '201':
+          description: Webhook created
+
+  /slack_integrations:
+    get:
+      tags: [Slack]
+      summary: List Slack integrations (admin only)
+      responses:
+        '200':
+          description: List of integrations
+    post:
+      tags: [Slack]
+      summary: Create a Slack integration
+      responses:
+        '201':
+          description: Integration created
+
+  /case_templates:
+    get:
+      tags: [Case Templates]
+      summary: List case templates
+      responses:
+        '200':
+          description: List of templates
+    post:
+      tags: [Case Templates]
+      summary: Create a case template (admin only)
+      responses:
+        '201':
+          description: Template created
+
+  /feature_flags:
+    get:
+      tags: [Feature Flags]
+      summary: List feature flags
+      responses:
+        '200':
+          description: List of feature flags
+
+  /audit_logs:
+    get:
+      tags: [Audit Logs]
+      summary: List audit logs (admin only)
+      responses:
+        '200':
+          description: List of audit logs
+
+  /backups:
+    get:
+      tags: [Backups]
+      summary: List backups (admin only)
+      responses:
+        '200':
+          description: List of backups
+    post:
+      tags: [Backups]
+      summary: Create a backup
+      responses:
+        '201':
+          description: Backup created
+
+  /imports:
+    post:
+      tags: [Import]
+      summary: Import cases from CSV
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: All rows imported
+        '200':
+          description: Partial import with errors
+
+  /two_factor/setup:
+    post:
+      tags: [Two-Factor Auth]
+      summary: Setup 2FA
+      responses:
+        '200':
+          description: QR code and secret returned
+
+  /two_factor/verify:
+    post:
+      tags: [Two-Factor Auth]
+      summary: Verify 2FA code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+      responses:
+        '200':
+          description: 2FA verified

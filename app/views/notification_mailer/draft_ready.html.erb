@@ -1,0 +1,9 @@
+<h2>Hi <%= @user.first_name %>,</h2>
+
+<p>Draft responses for <strong>Case <%= @case_number %></strong> are ready for your review.</p>
+
+<p>The AI-generated drafts have been prepared and are awaiting attorney review and approval.</p>
+
+<p style="text-align: center; margin: 24px 0;">
+  <a href="<%= @case_url %>" style="display: inline-block; background-color: #4f46e5; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">Review Drafts</a>
+</p>

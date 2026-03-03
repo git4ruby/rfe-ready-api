@@ -19,8 +19,13 @@
       "fingerprint": "896f551420856bc23f726e417275ece252b78e360c06ad7520b80130146574a3",
       "code": "params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :role, :bar_number)",
       "note": "Intentional: role assignment authorized via Pundit"
+    },
+    {
+      "fingerprint": "cebb8b0dc16318367a7c593c44c49f356aa9cbfcaf0ce82e8ca4a942ea227ca3",
+      "code": "params.require(:user).permit(:first_name, :last_name, :role, :bar_number, :status)",
+      "note": "Intentional: role and status assignment restricted to super admin only"
     }
   ],
   "updated": "",
-  "brakeman_version": "8.0.2"
+  "brakeman_version": "8.0.4"
 }

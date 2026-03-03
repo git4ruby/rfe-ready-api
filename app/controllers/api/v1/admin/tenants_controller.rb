@@ -88,6 +88,6 @@ class Api::V1::Admin::TenantsController < Api::V1::Admin::BaseController
   end
 
   def tenant_params
-    params.require(:tenant).permit(:name, :plan, :status, :data_retention_days, settings: {})
+    params.require(:tenant).permit(:name, :plan, :status, :data_retention_days, :two_factor_required, settings: {})
   end
 end
