@@ -6,7 +6,7 @@ class SlackIntegration < ApplicationRecord
     document.uploaded draft.approved
   ].freeze
 
-  validates :webhook_url, presence: true, format: { with: %r{\Ahttps://hooks\.slack\.com/}, message: "must be a valid Slack webhook URL" }
+  validates :webhook_url, presence: true, format: { with: %r{\Ahttps://hooks\.slack\.com/.*\z}, message: "must be a valid Slack webhook URL" }
   validates :events, presence: true
   validate :events_must_be_supported
 
