@@ -77,4 +77,10 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # ActionCable allowed origins for Cloudflare Flexible SSL
+  config.action_cable.allowed_request_origins = [
+    "https://rfeready.com",
+    "http://rfeready.com"
+  ]
 end
