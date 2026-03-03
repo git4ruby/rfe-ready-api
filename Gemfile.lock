@@ -467,7 +467,7 @@ GEM
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
-    ruby-openai (7.4.0)
+    ruby-openai (8.3.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
@@ -593,7 +593,7 @@ DEPENDENCIES
   rqrcode (~> 2.2)
   rspec-rails (~> 6.1)
   rubocop-rails-omakase
-  ruby-openai (~> 7.0)
+  ruby-openai (~> 8.3)
   sentry-rails (~> 5.0)
   sentry-ruby (~> 5.0)
   sentry-sidekiq (~> 5.0)
