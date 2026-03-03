@@ -114,6 +114,7 @@ jobs:
             git pull origin main
             cd /home/ubuntu/rfe-pilot
             docker compose --env-file .env.production -f docker-compose.production.yml build rails
+            docker compose --env-file .env.production -f docker-compose.production.yml run --rm rails bin/rails db:migrate
             docker compose --env-file .env.production -f docker-compose.production.yml up -d rails sidekiq
             sleep 10
             curl -f http://localhost/up || exit 1
