@@ -143,6 +143,37 @@ bin/rubocop -A
 bin/brakeman
 ```
 
+## Session Management
+
+### JWT Token Refresh
+- JWT tokens expire after **15 minutes** for enhanced security
+- Tokens automatically **refresh on every API request**
+- Fresh token sent in `Authorization` response header
+- Frontend captures and stores the refreshed token automatically
+- Users stay logged in indefinitely while active
+
+### Idle Timeout
+- Users are logged out after **15 minutes of inactivity**
+- Warning modal shown at 14 minutes (frontend)
+- Activity events (clicks, typing) reset the idle timer
+- Works in conjunction with JWT expiry for consistent session behavior
+
+### Implementation
+```ruby
+# JWT configuration in config/initializers/devise.rb
+config.jwt do |jwt|
+  jwt.expiration_time = 15.minutes.to_i
+  jwt.dispatch_requests = [
+    [ "POST", %r{^/api/v1/users/sign_in$} ],
+    [ "*", %r{^/api/v1/} ] # Refresh on every request
+  ]
+end
+
+# Token refresh handled by JwtRefresh concern
+# app/controllers/concerns/jwt_refresh.rb
+# Automatically included in Api::V1::BaseController
+```
+
 ## Real-Time Features
 
 The application uses ActionCable (WebSockets) for real-time features:
