@@ -1,5 +1,6 @@
 class Api::V1::BaseController < ApplicationController
   include Pundit::Authorization
+  include JwtRefresh
 
   before_action :authenticate_user!
   before_action :set_tenant
