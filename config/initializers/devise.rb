@@ -314,13 +314,18 @@ Devise.setup do |config|
   # ==> JWT Configuration
   config.jwt do |jwt|
     jwt.secret = ENV.fetch("DEVISE_JWT_SECRET_KEY") { Rails.application.credentials.devise_jwt_secret_key || Rails.application.secret_key_base }
+
+    # Dispatch JWT in Authorization header on login AND refresh on every API request
     jwt.dispatch_requests = [
-      [ "POST", %r{^/api/v1/users/sign_in$} ]
+      [ "POST", %r{^/api/v1/users/sign_in$} ],
+      [ "*", %r{^/api/v1/} ] # Refresh token on every API request
     ]
+
     jwt.revocation_requests = [
       [ "DELETE", %r{^/api/v1/users/sign_out$} ]
     ]
-    jwt.expiration_time = 24.hours.to_i
+
+    jwt.expiration_time = 15.minutes.to_i
   end
 
   # Navigate to sign_in after sign_out
